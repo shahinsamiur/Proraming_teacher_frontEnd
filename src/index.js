@@ -2,12 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import {MyProvider} from './contextAPI';
+import { store } from './store';
+import {Provider} from "react-redux"
+import {MyProvider} from "./contextAPI"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <MyProvider>
+  <Provider store={store}>
+    <MyProvider>
     <App />
-  </MyProvider>
+    </MyProvider>
+ 
+  </Provider>
 );
 
 

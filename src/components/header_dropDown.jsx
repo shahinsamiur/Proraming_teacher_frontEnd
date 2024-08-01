@@ -1,14 +1,16 @@
 
 'use client'
-import React, { useContext } from 'react';
+import React from 'react';
 import { Dropdown, DropdownAction, DropdownContent, DropdownItem, DropdownList } from 'keep-react'
-import { MyContext } from '../contextAPI';
+
 import Python from "./Langue_icons_components/python" // python logo components 
 import NodeJs from "./Langue_icons_components/nodejs"// Nodejs logo components 
 import JAVA from "./Langue_icons_components/java"// java logo components 
-
+import { useDispatch,useSelector } from 'react-redux';
+import {SetLanguge}from "../reduxSlices/check"
 const DropdownComponent = () => {
-  const { Languge, setLanguge } = useContext(MyContext) // selected programing languge for code editor
+const dispatch=useDispatch()
+  const Languge =useSelector((state)=>state.Check.language)
 
   return (
     <Dropdown trigger="click" className=''>
@@ -22,15 +24,15 @@ const DropdownComponent = () => {
         
         <DropdownList>
          
-          <DropdownItem onClick={(e) => setLanguge("python")} className='cursor-pointer'>
+          <DropdownItem onClick={(e) => dispatch( SetLanguge("python"))} className='cursor-pointer'>
             <Python />
           </DropdownItem>
 
-          <DropdownItem onClick={(e) => setLanguge("NodeJs")} className='cursor-pointer'>
+          <DropdownItem onClick={(e) => dispatch( SetLanguge("NodeJs"))} className='cursor-pointer'>
             <NodeJs />
           </DropdownItem>
 
-          <DropdownItem onClick={(e) => setLanguge("JAVA")} className='cursor-pointer'>
+          <DropdownItem onClick={(e) => dispatch( SetLanguge("Java"))} className='cursor-pointer'>
             <JAVA />
           </DropdownItem>
 

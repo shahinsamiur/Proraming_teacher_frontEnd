@@ -1,43 +1,17 @@
-import React, { createContext, useState, useEffect,useRef } from 'react';
-import io from 'socket.io-client';
-
-
-
-
+import React, { createContext, useState, useEffect, useRef } from 'react';
+import  { useSpeechRecognition } from 'react-speech-recognition';
 const MyContext = createContext(null);
 
 
 const MyProvider = ({ children }) => {
-
   const socket = useRef(null);
   const [code, setCode] = useState(); // save code , code will save in localstorage 
-  const [output, setOutput] = useState(''); // output for tarminal , tarminal output will never save in local storage 
-  const [Languge, setLanguge] = useState("python"); // languge for code editor , default python
-  const [TrigerTarminal, setTrigerTarminal] = useState(true);
-
-useEffect(() => {
-  if (!socket.current)socket.current = io('http://localhost:5000');
-
-
-}, [])
-
-
-
-
-  useEffect(() => {
-    // this useEfect will run when the code update every time 
-    // if code update then save in local storage , after any change in code 
-    if (code && window.localStorage.getItem("code") !== null) window.localStorage.setItem("code", code)
-
-
-
-      socket.current.on('runCodeResult', (result) => {
-        console.log('Code execution result:', result);
-        setOutput(result.output);
-      });
-  }, [code])
-
-
+  const audioRef = useRef(null); // Ref to store the audio source
+  const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition(); // Hook for speech recognition
+  const updateCode=(code )=>{
+    window.localStorage.setItem("code",code)
+    setCode(code)
+  }
   useEffect(() => {
     // this will run when the code editor will open on browser 
     // cheching if any code saved in local storage if then set to update the code 
@@ -49,12 +23,15 @@ useEffect(() => {
 
   }, [])
 
-  const onRun = () => {
-    socket.current.emit("runCode", { code });
-  }
-
   return (
-    <MyContext.Provider value={{ code, setCode, setOutput, output, setLanguge, Languge ,TrigerTarminal,setTrigerTarminal ,onRun,socket}}>
+    <MyContext.Provider value={{
+       socket ,code,updateCode,
+       transcript,
+       browserSupportsSpeechRecognition,
+       resetTranscript,
+       audioRef
+      }
+       }>
       {children}
     </MyContext.Provider>
   );

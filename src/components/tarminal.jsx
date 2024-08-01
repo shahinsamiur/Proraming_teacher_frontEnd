@@ -1,30 +1,19 @@
-import React, { useContext, useEffect } from 'react'
-import { MyContext } from '../contextAPI';
+import React from 'react'
 import Slider from "./swiper"
+import { TiggerToPPT,TriggerToTerminal } from "../reduxSlices/check";
+import { useDispatch, useSelector } from 'react-redux';
 export default function Tarminalnav() {
 
-
-
-
-    const { TrigerTarminal, setTrigerTarminal, output, socket, code } = useContext(MyContext);
+    const dispatch = useDispatch()
+    const TriggerTerminal = useSelector((state) => state.Check.TriggerTerminal)
+    const OutPut = useSelector((state) => state.Check.output)
     const Handle_Traminal_Triger = () => {
-        setTrigerTarminal(true);
+        dispatch(TriggerToTerminal())
     }
 
     const Handle_Presentation_Triger = () => {
-        setTrigerTarminal(false);
+        dispatch(TiggerToPPT())
     }
-    const onRun = () => socket.current.emit("runCode", { code });
-    useEffect(() => {
-        const handleKeyPress = (event) => {
-            if (event.shiftKey && event.key === 'Enter') {
-                onRun()
-            }
-        };
-        window.addEventListener('keydown', handleKeyPress);
-
-
-    }, [])
 
 
 
@@ -38,9 +27,9 @@ export default function Tarminalnav() {
                     Presentation
                 </h1>
             </div>
-            {TrigerTarminal ? (
+            {TriggerTerminal ? (
                 <div className='p-[1vw] h-[90vh] bg-black overflow-y-auto pt-[4vh] pb-[8vh]' style={{ whiteSpace: 'pre-wrap' }}>
-                    {output}
+                    {OutPut}
                 </div>
             ) : (
                 <div className='p-[1vw] h-[90vh] overflow-y-auto pt-[4vh] pb-[8vh] '>
