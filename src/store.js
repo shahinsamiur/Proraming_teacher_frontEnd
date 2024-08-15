@@ -1,6 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit"
 import Checks from "./reduxSlices/check"
-import { userInfo } from "./reduxSlices/userInfo"
+import userInfo from "./reduxSlices/userInfo"
 
 
 

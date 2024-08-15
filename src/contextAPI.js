@@ -6,6 +6,7 @@ const MyContext = createContext(null);
 const MyProvider = ({ children }) => {
   const socket = useRef(null);
   const [code, setCode] = useState(); // save code , code will save in localstorage 
+  const [socket_handler,setSocket_handler]=useState("")
   const audioRef = useRef(null); // Ref to store the audio source
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition(); // Hook for speech recognition
   const updateCode=(code )=>{
@@ -29,7 +30,9 @@ const MyProvider = ({ children }) => {
        transcript,
        browserSupportsSpeechRecognition,
        resetTranscript,
-       audioRef
+       audioRef,
+       socket_handler,
+       setSocket_handler
       }
        }>
       {children}
