@@ -3,13 +3,13 @@ const setLanguge = (state, action) => {
 }
 
 const Trigger_to_Terminal = (state) => {
-    if (state.TriggerTerminal != true) state.TriggerTerminal = true
+    if (state.TriggerTerminal !== true) state.TriggerTerminal = true
 
 }
 
 
 const Trigger_to_PPT = (state) => {
-    if (state.TriggerTerminal != false) state.TriggerTerminal = false
+    if (state.TriggerTerminal !== false) state.TriggerTerminal = false
 }
 
 

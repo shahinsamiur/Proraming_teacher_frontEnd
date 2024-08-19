@@ -8,8 +8,9 @@ const InitialValue = {
   Age: 22,
   Gender: "male",
   date: date,
-  Current_class: 1 / 10,
-  current_program:"wish"
+  Current_class: 1,
+  current_program:"wish",
+  current_program_count:0
 
 };
 
