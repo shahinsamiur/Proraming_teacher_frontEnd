@@ -1,26 +1,43 @@
-// src/components/CodeEditor.js
 import React, { useContext } from 'react';
 import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-python'; // getting languge mode 
-import 'ace-builds/src-noconflict/theme-twilight'; // getting theme 
+import 'ace-builds/src-noconflict/mode-python';
+import 'ace-builds/src-noconflict/theme-crimson_editor';
 import { MyContext } from '../contextAPI';
+import TerminalDemo from "./react-tarminal"
 const CodeEditor = () => {
-  const {code,updateCode}=useContext(MyContext)
+  const { code, updateCode } = useContext(MyContext);
+
+  // const handleDrag = (e, data) => {
+  //   console.log(data)
+  //   setTerminalHeight(prevHeight => Math.max(10, prevHeight - data.deltaY)); // Adjust height based on drag distance, with a minimum height
+  // };
+
   return (
-    <div className=' w-[50%] h-auto inline-block '>
-      <h1 className='flex flex-row justify-center bg-[#232323] py-[2.4vh] '>Code Editor</h1>
+    <div className='w-full h-full inline-block mt-[0vh] border-x-2 border-b-2'>
       <AceEditor
-        mode="python" // languge
-        theme="twilight" // eidtor theme 
-        name="python_code_editor" // name of code editor 
+        mode="python"
+        theme="crimson_editor"
+        name="python_code_editor"
         onChange={updateCode}
-        value={code} 
+        value={code}
         fontSize={14}
         width="100%"
-        height="90vh"
-        className='bg-[#252A33]'
+        height='45vh' // Adjust editor height dynamically
       />
 
+      {/* Draggable Handle */}
+      {/* <Draggable
+        axis="y"
+        onDrag={handleDrag}
+        bounds={{ top: -terminalHeight +0, bottom: 0 }} // Limit dragging to prevent collapse
+      >
+        <div style={{ height: '10px', cursor: 'row-resize', backgroundColor: 'red', zIndex: 100 }} />
+      </Draggable> */}
+
+      {/* Terminal */}
+        <div className="bg-white z-50 border-b-2" >
+        <TerminalDemo />
+        </div>
     </div>
   );
 };

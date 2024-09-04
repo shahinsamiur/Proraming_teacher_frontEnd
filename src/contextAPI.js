@@ -8,6 +8,7 @@ const MyProvider = ({ children }) => {
   const [code, setCode] = useState(); // save code , code will save in localstorage 
   const [socket_handler,setSocket_handler]=useState("")
   const audioRef = useRef(null); // Ref to store the audio source
+  const [Update_Bot_status,setUpdate_Bot_status]=useState(false)
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition(); // Hook for speech recognition
   const updateCode=(code )=>{
     window.localStorage.setItem("code",code)
@@ -24,6 +25,15 @@ const MyProvider = ({ children }) => {
 
   }, [])
 
+
+const Boom=(data)=>{
+  console.log("called context")
+  setUpdate_Bot_status(data)
+}
+
+
+
+
   return (
     <MyContext.Provider value={{
        socket ,code,updateCode,
@@ -32,7 +42,10 @@ const MyProvider = ({ children }) => {
        resetTranscript,
        audioRef,
        socket_handler,
-       setSocket_handler
+       setSocket_handler,
+       Update_Bot_status,
+       setUpdate_Bot_status,
+       Boom
       }
        }>
       {children}

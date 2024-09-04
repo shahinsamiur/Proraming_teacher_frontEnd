@@ -1,18 +1,29 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import CodeEditor from '../components/EditorComponent';
-import { MyContext } from '../contextAPI';
-import Nav from '../components/nav';
-import io from 'socket.io-client';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import Tarminal from "../components/tarminal"
-import { useDispatch, useSelector } from 'react-redux';
-import { SetOutput } from "../reduxSlices/check"
-import { audio_chunk } from '../components/socket_functions/audio_chunk';
-import { socket_connect_function } from '../components/socket_functions/socket_connect';
-import { updateData } from '../components/socket_functions/update_data';
-// import { calling_socket } from '../components/calling_socket';
-import { set_timeOut_call_socket } from "../components/functions/set_timeOut_call_socket"
 
+import React, { useContext, useEffect, useRef, useState } from 'react';
+
+import { MyContext } from '../contextAPI';
+
+import io from 'socket.io-client';
+
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import { SetOutput } from "../reduxSlices/check"
+
+import { audio_chunk } from '../components/socket_functions/audio_chunk';
+
+import { socket_connect_function } from '../components/socket_functions/socket_connect';
+
+import { updateData } from '../components/socket_functions/update_data';
+
+import Header from '../components/header';
+
+import Menu from '../components/menu';
+
+import Editor from '../components/editor';
+
+import Right_side from "../components/right_side"
 
 
 
@@ -22,32 +33,61 @@ import { set_timeOut_call_socket } from "../components/functions/set_timeOut_cal
 
 
 const EditorPage = () => {
+
   const userData = useSelector((state) => state.UserInfo)
 
 
 
+
+
+
+
+
+
   const dispatch = useDispatch();
+
   const audioRef = useRef(null); // Ref for audio source
-  const [isListening, setIsListening] = useState(true); // State to manage listening status
-  const { socket, socket_handler } = useContext(MyContext);
+
+  const [isListening, setIsListening] = useState(false); // State to manage listening status
+
+  const { socket, socket_handler} = useContext(MyContext);
+
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition(); // Hook for speech recognition
+  
   const [timeoutid, setTimeOutId] = useState(null)
+  var age=true
+
+
+
+
   useEffect(() => {
     console.log("this is transcript :", transcript)
     if (timeoutid) clearTimeout(timeoutid); // Clear previous timeout if any
     if (userData.current_program === "waiting_for_wish_response") {
-      var setTimeoutidTemp = set_timeOut_call_socket(["Skiping_cruent_program"],transcript,socket,5000,resetTranscript)
-      setTimeOutId(setTimeoutidTemp)
+        const newTimeoutId = setTimeout(() => {
+        console.warn(userData.current_program,transcript);
+
+        if (transcript && transcript.length > 2) {
+          console.warn("Reciving_the_anwser emmiting")
+          socket.current.emit("Reciving_the_anwser", { userData, transcript }); // Emit transcript to server
+        }
+          
+        
+        else socket.current.emit("Skiping_cruent_program", { userData, transcript });
+        resetTranscript(); // Reset transcript
+      }, 5000); // Delay 
+
+      setTimeOutId(newTimeoutId)
 
     } else if (userData.current_program === "intro_question") {
       console.log("intro_question ")
       const newTimeoutId = setTimeout(() => {
         if (transcript && transcript.length > 2) {
-          console.log("we have  response ")
+          socket.current.emit("Reciving_the_anwser", { userData, transcript }); // Emit transcript to server
         }
         else {
           console.log("we have no response ")
-          socket.current.emit("user_no_response")
+          socket.current.emit("user_no_response",userData)
 
         }
 
@@ -60,6 +100,34 @@ const EditorPage = () => {
   }, [userData, transcript])
 
 
+
+
+
+  useEffect(() => {
+    console.log("isLisning", isListening)
+    console.log("this is transcript :", transcript)
+    if (timeoutid) clearTimeout(timeoutid); // Clear previous timeout if any
+    if(isListening==false){
+      
+      const newTimeoutId = setTimeout(() => {
+        socket.current.emit("Reciving_the_anwser", { userData, transcript }); // Emit transcript to server
+        // console.log("request send ")
+      resetTranscript(); // Reset transcript
+    }, 5000); // Delay 
+
+    setTimeOutId(newTimeoutId)
+
+    }
+        
+
+    
+
+  }, [transcript,isListening])
+
+
+
+
+
   useEffect(() => {
     // Initialize socket connection once
     if (!socket.current) {
@@ -69,7 +137,22 @@ const EditorPage = () => {
       socket.current.on('connect', () => socket_connect_function(SpeechRecognition, socket, transcript, userData));
       socket.current.on("updateData", (data) => { updateData(data, dispatch) })
       socket.current.on("runCodeResult", (data) => { dispatch(SetOutput(data)) });
-      socket.current.on('audio_chunk', (chunk) => audio_chunk(chunk, resetTranscript, setIsListening, audioRef)); // Pass required params
+     
+      socket.current.on('audio_chunk', async (chunk) => { 
+        console.log("Receiving audio chunk...");
+    
+        setIsListening(true);
+    
+        await audio_chunk(chunk, resetTranscript, audioRef, () => {
+            // This callback is called after each chunk finishes playing
+            // If this is the last chunk, set `isListening` to false
+            console.log("All chunks finished playing, setting isListening to false.");
+            setIsListening(false);
+        });
+    });
+    
+      
+
       socket.current.on('disconnect', () => { console.log('Socket disconnected'); });
     }
     // Clean up the event listener on component unmount
@@ -83,18 +166,35 @@ const EditorPage = () => {
   }, [dispatch, socket, socket_handler]);
 
 
+
+
+
+
+
   if (!browserSupportsSpeechRecognition) { return null; } // Return null if browser doesn't support speech recognition
 
 
+
+
+
+
+
+  
+
   return (
-    <div className='flex flex-col bg-[#232323] h-[100vh] w-full text-[white] pt-[2vh] overflow-hidden'>
-      <Nav />
-      <div className='flex flex-row'>
-        <CodeEditor />
-        <Tarminal />
+    <div className='p-4 bg-[#F2F2F2]'>
+      <Header />
+      <div className='flex flex-row  w-full h-[84vh] gap-[1vw] font-Moderustic'>
+        <Menu />
+        <Editor />
+        <Right_side />
       </div>
     </div>
   );
 };
+
+
+
+
 
 export default EditorPage;

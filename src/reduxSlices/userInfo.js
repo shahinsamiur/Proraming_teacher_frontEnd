@@ -10,8 +10,10 @@ const InitialValue = {
   date: date,
   Current_class: 1,
   current_program:"wish",
-  current_program_count:0
-
+  current_program_count:0,
+  no_response:0,
+  Temp_me:0,
+  playing_audio:false
 };
 
 export const userInfo = createSlice({
@@ -23,5 +25,5 @@ export const userInfo = createSlice({
   },
 });
 
-export const {update_User_data } = userInfo.actions;
+export const {update_User_data ,update_Bot_status} = userInfo.actions;
 export default userInfo.reducer;
