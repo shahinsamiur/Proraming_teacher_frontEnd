@@ -25,7 +25,7 @@ export default function TerminalPage() {
                 console.log("cls");
                 settest([]);  // Reset the test state to an empty array
             } else {
-                let temp = [...test, value];
+                let temp = [...test, {"type":"command" , "value":value}];
                 settest(temp);
             }
             setvalue("");  // Clear the input field after pressing Enter

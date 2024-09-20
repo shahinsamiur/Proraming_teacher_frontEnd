@@ -5,7 +5,7 @@ import 'ace-builds/src-noconflict/theme-crimson_editor';
 import { MyContext } from '../contextAPI';
 import TerminalDemo from "./react-tarminal"
 const CodeEditor = () => {
-  const { code, updateCode } = useContext(MyContext);
+  const { code, updateCode,socket } = useContext(MyContext);
 
   // const handleDrag = (e, data) => {
   //   console.log(data)

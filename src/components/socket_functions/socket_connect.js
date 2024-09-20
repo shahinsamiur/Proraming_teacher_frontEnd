@@ -1,8 +1,9 @@
 
 
-const socket_connect_function = (SpeechRecognition, socket, transcript, data) => {
+const socket_connect_function = (SpeechRecognition, socket, isListening, data) => {
     // Start listening to speech
-    SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
+     SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
+    
 
     // Emit data immediately upon connection
     socket.current.emit("update_data", data);

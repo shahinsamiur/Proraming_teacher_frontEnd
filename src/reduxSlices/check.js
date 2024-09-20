@@ -12,9 +12,10 @@ const InitialValue = {
   value: 0,
   socket: null, // Initialize as null
   language: "python",
-  output: "",
+  output: [],
   TriggerTerminal: true,
-  code: ""
+  code: "",
+  replay:false
 
 };
 

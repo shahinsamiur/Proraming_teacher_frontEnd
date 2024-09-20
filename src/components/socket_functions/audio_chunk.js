@@ -16,7 +16,6 @@ const audio_chunk = async (chunk, resetTranscript, audioRef, onEnd) => {
       audioRef.current = source; // Store the audio source in ref
 
       source.onended = () => {
-          console.log("Chunk playback finished");
           if (onEnd) onEnd(); // Call the onEnd callback when playback finishes
       };
   } catch (error) {

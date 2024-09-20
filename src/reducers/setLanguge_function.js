@@ -15,8 +15,14 @@ const Trigger_to_PPT = (state) => {
 
 
 const setOutput = (state, action) => {
-    state.output = state.output+`\n \n your ${state.language} file is exucuting , please wait a while........ \n `+action.payload.output
+    if(action.payload.type==="clear"){ state.output=[]}
+    else{
+        let temp=state.output
+        temp.push(action.payload)
+        state.output=temp
 }
+    }
+       
 
 
 

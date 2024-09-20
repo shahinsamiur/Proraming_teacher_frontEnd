@@ -26,11 +26,7 @@ const MyProvider = ({ children }) => {
   }, [])
 
 
-const Boom=(data)=>{
-  console.log("called context")
-  setUpdate_Bot_status(data)
-}
-
+const [Slides,setSlides]=useState(0)
 
 
 
@@ -43,9 +39,8 @@ const Boom=(data)=>{
        audioRef,
        socket_handler,
        setSocket_handler,
-       Update_Bot_status,
-       setUpdate_Bot_status,
-       Boom
+       Slides,setSlides
+       
       }
        }>
       {children}
