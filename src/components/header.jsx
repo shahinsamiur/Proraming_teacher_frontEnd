@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { IoMdPlay } from "react-icons/io";
 import { MyContext } from '../contextAPI';
-
+import {  useSelector } from 'react-redux';
 
 
 
@@ -13,12 +13,15 @@ import { MyContext } from '../contextAPI';
 
 export default function Header() {
 
+    const userData = useSelector((state) => state.UserInfo)
 
 
 
-
-    const { socket, code } = useContext(MyContext)
-    const onRun = () => { socket.current.emit("runCode", { code }); }// function for sending code to backend 
+    const { socket, code,timeoutidC } = useContext(MyContext)
+    const onRun = () => { 
+        if (timeoutidC) clearTimeout(timeoutidC); // Clear previous timeout if any
+        
+        socket.current.emit("runCode", { code, userData}); }// function for sending code to backend 
 
 
 

@@ -13,18 +13,27 @@ const Trigger_to_PPT = (state) => {
 }
 
 
+const set_Right_side_state = (state, action) => {
+    state.Right_side_state = action.payload
+}
+
+
+
+
+
+
 
 const setOutput = (state, action) => {
-    if(action.payload.type==="clear"){ state.output=[]}
-    else{
-        let temp=state.output
+    if (action.payload.type === "clear") { state.output = [] }
+    else {
+        let temp = state.output
         temp.push(action.payload)
-        state.output=temp
-}
+        state.output = temp
     }
-       
+}
 
 
 
 
-export { setLanguge, Trigger_to_Terminal, Trigger_to_PPT, setOutput }
+
+export { setLanguge, Trigger_to_Terminal, Trigger_to_PPT, setOutput, set_Right_side_state }

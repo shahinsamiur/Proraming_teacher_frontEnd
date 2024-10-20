@@ -27,7 +27,7 @@ const MyProvider = ({ children }) => {
 
 
 const [Slides,setSlides]=useState(0)
-
+const [timeoutidC, setTimeOutIdC] = useState(null)
 
 
   return (
@@ -39,8 +39,8 @@ const [Slides,setSlides]=useState(0)
        audioRef,
        socket_handler,
        setSocket_handler,
-       Slides,setSlides
-       
+       Slides,setSlides,
+       timeoutidC, setTimeOutIdC
       }
        }>
       {children}

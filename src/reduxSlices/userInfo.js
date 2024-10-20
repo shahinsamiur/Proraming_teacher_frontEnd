@@ -12,7 +12,8 @@ const InitialValue = {
   current_program:"wish",
   current_program_count:0,
   no_response:0,
-  re_request:false
+  re_request:false,
+  imidiate:false
 };
 
 export const userInfo = createSlice({

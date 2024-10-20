@@ -1,44 +1,46 @@
-import React ,{useContext}from 'react'
-import Slider from './swiper'
+import React from 'react'
+import Presentation from './right_side_components/presentation';
+import Video_player from './right_side_components/video_player';
+import Browser from './right_side_components/browser';
+
 
 import { VscCodeOss } from "react-icons/vsc";
 import { LuYoutube } from "react-icons/lu";
 import { TfiLayoutSliderAlt } from "react-icons/tfi";
-import { MyContext } from '../contextAPI';
 
-
+import { useDispatch, useSelector } from 'react-redux';
+import { set_right_side_state } from "../reduxSlices/check";
 
 export default function Right_side() {
+  const Right_side_state = useSelector((state) => state.Check.Right_side_state)
+  const dispatch = useDispatch()
+  const TrigerPPT = () => {
+    dispatch(set_right_side_state("presentation"))
+  }
 
-  const {Slides,setSlides}=useContext(MyContext)
-const setNew=()=>{
-  setSlides(4)
-  console.log(Slides)
-}
+  const TrigerVideoPlayer = () => {
+    dispatch(set_right_side_state("VidePlayer"))
+  }
 
-
-
+  const TrigerBrowser = () => {
+    dispatch(set_right_side_state("Browser"))
+  }
 
   return (
     <div className='w-[42vw] h-full border-2 gap-[1%] rounded-md flex flex-col items-center'>
 
-      <div className='h-[90%] flex flex-col items-center'>
-        <div className='w-full h-[3vw] flex justify-center items-center border-b-2  rounded-md mb-[1vw] font-Moderustic'>Presentation</div>
-        <Slider />
-        <p className=' text-center  text-[1vw] w-[80%] text-gray-500 mt-[2vh]'>orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been</p>
 
-      </div>
+      {Right_side_state === "presentation" ? <Presentation /> : Right_side_state === "VidePlayer" ? <Video_player /> : <Browser />}
+
 
 
 
       <div className='w-full h-[8%] border-t-2 flex fles=row justify-center gap-[20%] items-center'>
-        <TfiLayoutSliderAlt className='text-[2vw] cursor-pointer text-black-500' />
-        <VscCodeOss className='text-[2vw] cursor-pointer text-gray-500' />
-        <LuYoutube className='text-[2vw] cursor-pointer text-gray-500' onClick={setNew}/>
+        <TfiLayoutSliderAlt className='text-[2vw] cursor-pointer text-black-500' onClick={TrigerPPT} />
+        <LuYoutube className='text-[2vw] cursor-pointer text-gray-500' onClick={TrigerVideoPlayer} />
+        <VscCodeOss className='text-[2vw] cursor-pointer text-gray-500' onClick={TrigerBrowser} />
 
       </div>
-
-
 
     </div>
   )

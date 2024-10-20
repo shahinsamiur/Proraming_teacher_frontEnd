@@ -21,7 +21,8 @@ export default function TerminalPage() {
             if (value === "cls"||value==="clear") {
                 dispatch(SetOutput({"type":"clear","value":""}))  // Reset the test state to an empty array
             } else if(value === "run") {
-                socket.current.emit("runCode", { code });
+                if(userData.re_request==="code")  socket.current.emit("check_code", { code });
+                else    socket.current.emit("runCode", { code });
                 let tempData={
                     "type=":"running_code",
                     "value":"Your code is running ..."

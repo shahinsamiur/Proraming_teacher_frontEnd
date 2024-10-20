@@ -2,7 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { UpdateCode } from "../reducers/updateCode";
-import { setLanguge ,Trigger_to_PPT,Trigger_to_Terminal,setOutput} from "../reducers/setLanguge_function";
+import { setLanguge ,Trigger_to_PPT,Trigger_to_Terminal,setOutput,set_Right_side_state} from "../reducers/setLanguge_function";
 
 
 
@@ -15,7 +15,8 @@ const InitialValue = {
   output: [],
   TriggerTerminal: true,
   code: "",
-  replay:false
+  replay:false,
+  Right_side_state:"presentation"
 
 };
 
@@ -27,9 +28,10 @@ export const check = createSlice({
     SetLanguge:setLanguge,
     TiggerToPPT:Trigger_to_PPT,
     TriggerToTerminal:Trigger_to_Terminal,
-    SetOutput:setOutput
+    SetOutput:setOutput,
+    set_right_side_state:set_Right_side_state
   },
 });
 
-export const { updateCode, setSocket ,SetLanguge,TiggerToPPT,TriggerToTerminal,SetOutput} = check.actions;
+export const { updateCode, setSocket ,SetLanguge,TiggerToPPT,TriggerToTerminal,SetOutput,set_right_side_state} = check.actions;
 export default check.reducer;

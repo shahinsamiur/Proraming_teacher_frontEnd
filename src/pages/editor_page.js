@@ -35,9 +35,7 @@ import Right_side from "../components/right_side"
 const EditorPage = () => {
 
   const userData = useSelector((state) => state.UserInfo)
-
-
-
+  const [ChangeSlide, setChangeSlide] = useState(null)
 
 
 
@@ -48,16 +46,15 @@ const EditorPage = () => {
 
   const audioRef = useRef(null); // Ref for audio source
 
-  const { socket, socket_handler, Slides,setSlides} = useContext(MyContext);
+  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC } = useContext(MyContext);
 
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition(); // Hook for speech recognition
 
   const [timeoutid, setTimeOutId] = useState(null)
-
+  const [newTimeoutId_trans, setnewTimeoutId_trans] = useState(null)
   var updateDataTemp = useRef(null);
   const isListeningRef = useRef(false); // Use useRef instead of var for persistent value
   const playing_audio_Ref = useRef(false);
-
 
   useEffect(() => {
     if (userData.re_request === true) {
@@ -68,6 +65,8 @@ const EditorPage = () => {
 
 
 
+
+
     console.log("this is transcript :", transcript)
     if (timeoutid) clearTimeout(timeoutid); // Clear previous timeout if any
 
@@ -75,17 +74,18 @@ const EditorPage = () => {
     if (userData.current_program === "waiting_for_wish_response" && isListeningRef.current) {
 
       const newTimeoutId = setTimeout(() => {
-        if (transcript && transcript.length > 2) {
-          // console.warn("Reciving_the_anwser emmiting", { userData, transcript })
-          socket.current.emit("reciving_the_anwser", { userData, transcript }); // Emit transcript to server
+        // if (transcript && transcript.length > 2) {
+        //   // console.warn("Reciving_the_anwser emmiting", { userData, transcript })
+        //   socket.current.emit("reciving_the_anwser", { userData, transcript }); // Emit transcript to server
 
 
-        } else {
+        // } else {
 
-          socket.current.emit("Skiping_cruent_program", { userData, transcript });
+        //   socket.current.emit("Skiping_cruent_program", { userData, transcript });
 
-        }
-
+        // }
+        socket.current.emit("reciving_the_anwser", { userData, transcript: "good morning" }); // Emit transcript to server
+        console.log("waiting_for_wish_response : ")
       }, 5000); // Delay 
 
 
@@ -99,19 +99,22 @@ const EditorPage = () => {
 
     }
 
-    if (userData.current_program === "intro_question" && isListeningRef.current) {
+    else if (userData.current_program === "intro_question" && isListeningRef.current) {
+
       // console.log("isListeningRef : ", isListeningRef, "playing_audio_Ref : ", playing_audio_Ref,)
       const newTimeoutId = setTimeout(() => {
-        if (transcript && transcript.length > 2) {
-          socket.current.emit("reciving_the_anwser", { userData, transcript }); // Emit transcript to server
-          resetTranscript()
-        }
+        console.log("intro_question : ")
+        // if (transcript && transcript.length > 2) {
+        //   socket.current.emit("reciving_the_anwser", { userData, transcript }); // Emit transcript to server
+        //   resetTranscript()
+        // }
 
 
-        else {
-          socket.current.emit("user_no_response", userData)
+        // else {
+        //   socket.current.emit("user_no_response", userData)
 
-        }
+        // }
+        socket.current.emit("reciving_the_anwser", { userData, transcript }); // Emit transcript to server
 
       }, 5000); // Delay of 5 seconds
 
@@ -119,12 +122,13 @@ const EditorPage = () => {
 
 
       // alert("error at line 121")
+
     }
 
 
 
 
-    if (userData.current_program === "intro_question_anwser_waiting" && isListeningRef.current) {
+    else if (userData.current_program === "intro_question_anwser_waiting" && isListeningRef.current) {
       // alert("intro_question_anwser_waiting")
       // socket.current.emit("reciving_the_anwser", { userData, transcript });
       console.log("intro_question_anwser_waiting")
@@ -148,6 +152,44 @@ const EditorPage = () => {
 
     }
 
+
+    if (userData.re_request === "code") {
+      if (newTimeoutId_trans) clearTimeout(newTimeoutId_trans)
+      setnewTimeoutId_trans(setTimeout(() => {
+
+        if (transcript && transcript.length > 10) {
+          // socket.current.emit("", { userData, transcript });
+          alert("transcript code has ")
+          resetTranscript()
+        } else {
+          resetTranscript()
+        }
+
+
+      }, 3000)) // Delay 
+
+
+      console.log("code no response ")
+      const newTimeoutId = setTimeout(() => {
+
+        console.log("code no response ")
+        // console.warn("Reciving_the_anwser emmiting", { userData, transcript })
+        socket.current.emit("code_no_response", { userData, transcript });
+
+
+
+
+      }, 30000); // Delay 
+      setTimeOutIdC(newTimeoutId)
+
+    }
+
+
+
+
+
+
+
   }, [userData, transcript])
 
 
@@ -169,8 +211,14 @@ const EditorPage = () => {
 
 
       socket.current.on("updateData", async (data) => {
-        console.log("data received")
-        updateDataTemp.current = data
+        if (data == "slides") setChangeSlide(true)
+        if (data.imidiate === true) { // this is for when code test and run 
+          let data_temp = data
+          data_temp.imidiate = false
+          updateData(data_temp, dispatch)
+        }
+        else if (updateDataTemp.current === null && data!=="slides") updateDataTemp.current = data
+     
       })
 
 
@@ -178,31 +226,18 @@ const EditorPage = () => {
       socket.current.on("runCodeResult", (data) => {
         dispatch(SetOutput({ "type": "result", "value": data.output }))
       });
-      socket.current.on("ChangeSlides", () => {
-        // here will be the change slide code 
-        // there recevied number 
-        // is number is positive  then go to next otherwise previous slide 
-        // go next or previous with number 
-          setSlides(Slides+1)
-          console.log("slide Change : ",Slides)
-        // alert("silde changed")
-
-      })
       socket.current.on('audio_chunk', async (chunk) => {
 
         isListeningRef.current = false;
-        console.log("playing_audio_Ref : ", playing_audio_Ref)
         if (playing_audio_Ref.current == false) {
           playing_audio_Ref.current = true
           await audio_chunk(chunk, resetTranscript, audioRef, () => {
 
             // This callback is called after each chunk finishes playing
             // If this is the last chunk, set isListening to false
-            console.log("audio chunk finished ")
+            if (ChangeSlide) setSlides(Slides + 1)
             isListeningRef.current = true;
             if (updateDataTemp.current != null) {
-
-              console.log(updateDataTemp.current)
               updateData(updateDataTemp.current, dispatch)
             }
             updateDataTemp.current = null
