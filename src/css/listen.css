@@ -1,0 +1,23 @@
+.animate-blink {
+  animation: blink 1.4s infinite both;
+}
+
+.two_point {
+  animation-delay: 0.2s;
+}
+
+.three_point {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}

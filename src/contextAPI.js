@@ -8,7 +8,7 @@ const MyProvider = ({ children }) => {
   const [code, setCode] = useState(); // save code , code will save in localstorage 
   const [socket_handler,setSocket_handler]=useState("")
   const audioRef = useRef(null); // Ref to store the audio source
-  const [Update_Bot_status,setUpdate_Bot_status]=useState(false)
+  const [botStatus,setbotStatus]=useState("listening")
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition(); // Hook for speech recognition
   const updateCode=(code )=>{
     window.localStorage.setItem("code",code)
@@ -40,7 +40,7 @@ const [timeoutidC, setTimeOutIdC] = useState(null)
        socket_handler,
        setSocket_handler,
        Slides,setSlides,
-       timeoutidC, setTimeOutIdC
+       timeoutidC, setTimeOutIdC,botStatus,setbotStatus
       }
        }>
       {children}

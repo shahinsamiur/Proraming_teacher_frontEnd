@@ -27,7 +27,7 @@ export default function Right_side() {
   }
 
   return (
-    <div className='w-[42vw] h-full border-2 gap-[1%] rounded-md flex flex-col items-center'>
+    <div className='w-[42vw] h-full  gap-[1%] rounded-md flex flex-col items-center'>
 
 
       {Right_side_state === "presentation" ? <Presentation /> : Right_side_state === "VidePlayer" ? <Video_player /> : <Browser />}
@@ -35,7 +35,7 @@ export default function Right_side() {
 
 
 
-      <div className='w-full h-[8%] border-t-2 flex fles=row justify-center gap-[20%] items-center'>
+      <div className='w-full h-[8%]  flex justify-center gap-[20%] items-center'>
         <TfiLayoutSliderAlt className='text-[2vw] cursor-pointer text-black-500' onClick={TrigerPPT} />
         <LuYoutube className='text-[2vw] cursor-pointer text-gray-500' onClick={TrigerVideoPlayer} />
         <VscCodeOss className='text-[2vw] cursor-pointer text-gray-500' onClick={TrigerBrowser} />

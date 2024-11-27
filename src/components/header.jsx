@@ -32,7 +32,7 @@ export default function Header() {
     return (
         <div className='flex flex-row  w-full h-[5vw] '>
             <img src='/icons/logo.svg' alt='logo' className='w-[5vw]' />
-
+z
 
 
 
@@ -40,7 +40,7 @@ export default function Header() {
             <div className='flex flex-row ml-[24vw] gap-[2vw] justify-center items-center w-[30vw] '>
 
 
-                <div className='flex flex-row items-center justify-center gap-[0.5vw]'>
+                <div className='flex flex-row items-center justify-center gap-[0.5vw] text-white'>
                     <img src="/icons/python-logo.png" alt="error" className='w-[2vw] h-[2.4vw] ' />
                     <p>Python 3.12.4</p>
                 </div>

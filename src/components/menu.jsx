@@ -19,7 +19,7 @@ export default function menu() {
   
   
   return (
-    <div className='w-[3vw] h-[full] white rounded-md shadow-md border-2' >
+    <div className='w-[3vw] h-[full] bg-[#151515] rounded-md ' >
 
       <div className='w-full h-[90%]  flex flex-col  items-center py-[4vh] gap-[6vh]'>
         <GoHome className='text-[2vw] text-gray-400 cursor-pointer' />

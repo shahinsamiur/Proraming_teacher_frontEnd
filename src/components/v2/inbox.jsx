@@ -1,0 +1,71 @@
+import React, { useState } from "react";
+import { IoIosSend } from "react-icons/io";
+export default function Inbox() {
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+
+  // Handle sending messages
+  const handleSendMessage = () => {
+    if (inputValue.trim() !== "") {
+      setMessages([...messages, { type: "user", text: inputValue }]);
+      setInputValue("");
+
+      // Simulate AI response
+      setTimeout(() => {
+        setMessages((prev) => [
+          ...prev,
+          { type: "ai", text: "This is a response from AI!" },
+        ]);
+      }, 500);
+    }
+  };
+
+  return (
+    <div className="h-[82%] w-full flex flex-col  justify-center">
+      {/* Messages Section */}
+      <div className="h-[88%] p-4 overflow-y-auto">
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`mb-[0.5vh] ${
+              msg.type === "user"
+                ? "text-right"
+                : "text-left  p-2 rounded-lg"
+            }`}
+          >
+            <span
+              className={`inline-block px-[0.6vw] py-[0.2vw] text-[1vw] rounded-lg ${
+                msg.type === "user"
+                  ? "bg-[#08618e] text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+            >
+              {msg.text}
+            </span>
+          </div>
+        ))}
+           {messages.length===0?<div className="w-full h-full flex items-center justify-center text-[#2c2c2c]">Your inbox is empty</div>:null}
+      </div>
+
+
+   
+
+      {/* Input Section */}
+      <div className="w-[full] px-[3%] gap-2 ">
+
+        <div className=" flex w-[full] bg-[#2c2c2c] h-[5vh] rounded-lg">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className=" bg-inherit text-[0.8vw] h-full rounded-lg w-[90%] px-[1vw] outline-none"
+          placeholder="Type a message..."
+        />
+          <IoIosSend className=" text-[#31b8d6]  text-[2.1vw] " onClick={handleSendMessage}/>
+
+        </div>
+     
+      </div>
+    </div>
+  );
+}

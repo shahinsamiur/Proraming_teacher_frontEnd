@@ -1,0 +1,19 @@
+.two_point {
+    animation-delay: 0.2s !important; /* Add !important to force the style if Tailwind overrides */
+  }
+  
+  .three_point {
+    animation-delay: 0.4s !important;
+  }
+  
+  @keyframes bounce {
+    to {
+      opacity: 0.2;
+      transform: translateY(-3px);
+    }
+  }
+  
+  .animate-bounce {
+    animation: bounce 1s infinite alternate;
+  }
+  

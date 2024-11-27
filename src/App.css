@@ -1,38 +1,115 @@
-.App {
-  text-align: center;
+.line1 {
+  height: 0.3vw;
+  animation: line1 500ms alternate infinite ease;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.line2 {
+  height: 0.5vw;
+  animation: line2 700ms alternate infinite ease;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.line3 {
+  height: 0.2vw;
+  animation: line3 600ms alternate infinite ease;
+}
+
+.line4 {
+  height: 0.5vw;
+  animation: line4 700ms alternate infinite ease;
+}
+
+
+
+
+/* In your CSS file, e.g., App.css */
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Hide scrollbars in WebKit-based browsers (Chrome, Safari) */
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+
+/* Target the Ace Editor scrollbar */
+.ace_scrollbar::-webkit-scrollbar {
+  width: 0.3vw; /* Set width of scrollbar */
+}
+
+.ace_scrollbar::-webkit-scrollbar-thumb {
+  background-color: #555; /* Color of the scrollbar handle */
+  border-radius: 4px; /* Round the corners of the handle */
+}
+
+.ace_scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darker color when hovered */
+}
+
+.ace_scrollbar::-webkit-scrollbar-track {
+  background-color: #333; /* Track color (scrollbar background) */
+}
+
+/* Change background color of the line numbers gutter */
+.ace_gutter {
+  background-color: #333; /* Set your desired background color */
+  color: #ccc;            /* Set line numbers text color */
+}
+
+/* Optionally style the active line number */
+.ace_gutter-active-line {
+  background-color: #aaa; /* Set background for the active line */
+}
+
+/* Change font color of the line numbers */
+.ace_gutter-cell {
+  color: #aaa; /* Customize the color of line numbers */
+}
+
+@keyframes line1 {
+  0% {
+      height: 0.5vw;
+  }
+  35% {
+      height: 0.3vw;
+  }
+  100% {
+      height: 0.5vw;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@keyframes line2 {
+  0% {
+      height: 0.1vw;
   }
-  to {
-    transform: rotate(360deg);
+  35% {
+      height: 0.5vw;
+  }
+  100% {
+      height: 0.5vw;
+  }
+}
+
+@keyframes line3 {
+  0% {
+      height: 0.5vw;
+  }
+  35% {
+      height: 0.2vw;
+  }
+  100% {
+      height: 0vw;
+  }
+}
+
+@keyframes line4 {
+  0% {
+      height: 0.5vw;
+  }
+  35% {
+      height: 0.3vw;
+  }
+  100% {
+      height: 0.5vw;
   }
 }

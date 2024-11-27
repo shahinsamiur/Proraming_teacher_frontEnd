@@ -13,7 +13,9 @@ const InitialValue = {
   current_program_count:0,
   no_response:0,
   re_request:false,
-  imidiate:false
+  imidiate:false,
+  await:false,
+  code_count:0,
 };
 
 export const userInfo = createSlice({

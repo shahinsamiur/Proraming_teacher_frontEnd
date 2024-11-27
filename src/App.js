@@ -10,6 +10,7 @@ export default function App() {
       <Route index element={<HomePage />} />
         <Route path='/editor' element={<EditorPage />} />
         <Route path='/terminal' element={<TerminalPage />} />
+    
       </Routes>
     </BrowserRouter>
   )
