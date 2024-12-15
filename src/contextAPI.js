@@ -1,17 +1,17 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
-import  { useSpeechRecognition } from 'react-speech-recognition';
+import { useSpeechRecognition } from 'react-speech-recognition';
 const MyContext = createContext(null);
 
 
 const MyProvider = ({ children }) => {
   const socket = useRef(null);
   const [code, setCode] = useState(); // save code , code will save in localstorage 
-  const [socket_handler,setSocket_handler]=useState("")
+  const [socket_handler, setSocket_handler] = useState("")
   const audioRef = useRef(null); // Ref to store the audio source
-  const [botStatus,setbotStatus]=useState("listening")
+  const [botStatus, setbotStatus] = useState("listening")
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition(); // Hook for speech recognition
-  const updateCode=(code )=>{
-    window.localStorage.setItem("code",code)
+  const updateCode = (code) => {
+    window.localStorage.setItem("code", code)
     setCode(code)
   }
   useEffect(() => {
@@ -26,23 +26,26 @@ const MyProvider = ({ children }) => {
   }, [])
 
 
-const [Slides,setSlides]=useState(0)
-const [timeoutidC, setTimeOutIdC] = useState(null)
-
-
+  const [Slides, setSlides] = useState(0)
+  const [timeoutidC, setTimeOutIdC] = useState(null)
+  const [isToggled, setIsToggled] = useState(false);
+  const [simpleState, setsimpleState] = useState("presentation");
+  const [setting_open, set_setting_open] = useState(false);
   return (
     <MyContext.Provider value={{
-       socket ,code,updateCode,
-       transcript,
-       browserSupportsSpeechRecognition,
-       resetTranscript,
-       audioRef,
-       socket_handler,
-       setSocket_handler,
-       Slides,setSlides,
-       timeoutidC, setTimeOutIdC,botStatus,setbotStatus
-      }
-       }>
+      socket, code, updateCode,
+      transcript,
+      browserSupportsSpeechRecognition,
+      resetTranscript,
+      audioRef,
+      socket_handler,
+      setSocket_handler,
+      Slides, setSlides,
+      timeoutidC, setTimeOutIdC, botStatus, setbotStatus,
+      isToggled, setIsToggled,
+      simpleState, setsimpleState,setting_open, set_setting_open
+    }
+    }>
       {children}
     </MyContext.Provider>
   );

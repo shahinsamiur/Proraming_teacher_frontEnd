@@ -39,7 +39,7 @@ export default function TerminalPage() {
 
     return (
         <>
-            <div className=" text-white px-2 pt-[1vh] text-[1vw] pb-[20%] w-[100%] h-[28.7vh] overflow-auto bg-[#151515] border-t-[0.01vw] border-[#2f2f2f] no-scrollbar" >
+            <div className=" text-white px-2 pt-[1vh] text-[1vw] pb-[20%] w-[100%] h-[90%] overflow-auto bg-[#151515] border-t-[0.01vw] border-[#2f2f2f] no-scrollbar" >
                 <div className=" w-full h-auto ">
                     {userData.map((data, index) => (
                         data.type === "result" ? (

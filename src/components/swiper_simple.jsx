@@ -34,7 +34,7 @@ export default function Slider() {
     <div className="flex gap-[2vh] w-[full] flex-col items-center">
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)} // Save Swiper instance
-        className="mySwiper w-[38vw] h-[full] border-2 flex flex-col justify-center items-center"
+        className="mySwiper w-[50vw] h-[full] flex flex-col justify-center items-center"
       >
         <SwiperSlide className="w-[40vw] h-[100vh] bg-slate-400">
           <img src="/output/python_class_01-1.png" alt="error" className="w-[full] h-[full]" />
@@ -93,7 +93,7 @@ export default function Slider() {
 
       </Swiper>
 
-      <div className="w-[50%] rounded-lg h-[5vh] flex flex-row justify-center items-center border-2 gap-[30%]">
+      {/* <div className="w-[50%] rounded-lg h-[5vh] flex flex-row justify-center items-center border-2 gap-[30%]">
         <IoIosArrowBack
           className="text-[1.4vw] text-gray-400 cursor-pointer"
           onClick={handlePrevSlide} // Go to previous slide on click
@@ -104,7 +104,7 @@ export default function Slider() {
         />
 
   
-      </div>
+      </div> */}
     </div>
   );
 }

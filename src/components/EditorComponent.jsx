@@ -10,7 +10,7 @@ const CodeEditor = () => {
   const { code, updateCode, socket } = useContext(MyContext);
 
   return (
-    <div className="w-full h-full inline-block mt-[0vh] bg-inherit">
+    <div className="w-full h-full inline-block mt-[0vh] bg-inherit ">
       <AceEditor
         mode="python"
         theme="tomorrow_night"
@@ -29,7 +29,7 @@ const CodeEditor = () => {
       />
 
       {/* Terminal */}
-      <div>
+      <div className='overflow-hidden h-[40%] w-[99%] '>
         <TerminalDemo />
       </div>
     </div>

@@ -4,16 +4,17 @@ import io from 'socket.io-client';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetOutput } from "../reduxSlices/check";
-import { audio_chunk } from '../components/socket_functions/audio_chunk';
 import { socket_connect_function } from '../components/socket_functions/socket_connect';
 import { updateData } from '../components/socket_functions/update_data';
-
+import { audio_chunk } from '../components/socket_functions/audio_chunk';
 import "../App.css";
 import Menu from '../components/v2/menu';
 import Header from '../components/v2/header';
-import Codepace from '../components/v2/code_space';
-
-
+import CodeSpace from '../components/v2/code_space';
+import CodeSpace2 from '../components/v2/CodeSpace2';
+import EXMenu from '../components/v2/exMenu';
+import PresentationFull from '../components/v2/presentationFull';
+import SettingCom from '../components/setting_com';
 
 
 const EditorPage = () => {
@@ -21,13 +22,28 @@ const EditorPage = () => {
   const [ChangeSlide, setChangeSlide] = useState(null);
   const dispatch = useDispatch();
   const audioRef = useRef(null);
-  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC,setbotStatus } = useContext(MyContext);
+  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC, setbotStatus, isToggled, simpleState, setting_open } = useContext(MyContext);
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
   const [timeoutid, setTimeOutId] = useState(null);
   const [newTimeoutId_trans, setnewTimeoutId_trans] = useState(null);
   var updateDataTemp = useRef(null);
   const isListeningRef = useRef(false);
   const playing_audio_Ref = useRef(false);
+
+
+  useEffect(() => {
+    console.log("hello")
+
+  }, [isToggled])
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     const handleRequest = async () => {
 
@@ -48,8 +64,8 @@ const EditorPage = () => {
 
 
         socket.current.emit("reciving_the_anwser", { userData, transcript });
-      } else if (userData.re_request === "ask_querys") {
-        socket.current.emit("ask_querys", { userData, transcript });
+      } else if (userData.re_request === "stop_user_query") {
+        socket.current.emit("stop_user_query", { userData, transcript });
       } else if (userData.re_request === "ask_querys_waiting") {
         // const newTimeoutId = setTimeout(() => {
         //   socket.current.emit("ask_querys_waiting", { userData, transcript });
@@ -63,7 +79,7 @@ const EditorPage = () => {
 
       if (userData.current_program === "waiting_for_wish_response" && isListeningRef.current) {
         const newTimeoutId = setTimeout(() => {
-          socket.current.emit("reciving_the_anwser", { userData, transcript: "good morning" });
+          socket.current.emit("reciving_the_anwser", { userData, transcript: transcript });
           console.log("waiting_for_wish_response:");
         }, 5000);
         setTimeOutId(newTimeoutId);
@@ -123,11 +139,11 @@ const EditorPage = () => {
     handleRequest();
   }, [userData, transcript]);
 
-useEffect(() => {
-  console.log("this is bot status :",playing_audio_Ref.current)
-    if(playing_audio_Ref.current===true)setbotStatus("speacking")
+  useEffect(() => {
+    console.log("this is bot status :", playing_audio_Ref.current)
+    if (playing_audio_Ref.current === true) setbotStatus("speacking")
     else setbotStatus("listening")
-}, [])
+  }, [])
 
 
 
@@ -163,7 +179,7 @@ useEffect(() => {
           await audio_chunk(chunk, resetTranscript, audioRef, () => {
             if (ChangeSlide) {
               console.log("slide changed");
-              
+
               setSlides(Slides + 1);
               setChangeSlide(false);
             }
@@ -212,16 +228,25 @@ useEffect(() => {
 
   return (
     <div className="bg-[#101010] w-full
-    h-screen flex justify-center 
-    overflow-hidden p-1 gap-[1vw] 
-    items-center text-white"
+                         h-screen flex justify-center 
+                         overflow-hidden p-1 gap-[1vw] 
+                         items-center text-white"
     >
       < Menu />
       <div className="w-[90vw] h-[90vh] bg-[#151515] rounded-lg p-[1.5vw] flex flex-col gap-[1vw]">
         {/* header */}
         <Header />
-        <Codepace />
+        {isToggled && simpleState === "code" ? <CodeSpace2 /> : isToggled && simpleState === "presentation" ? <PresentationFull /> : < CodeSpace />}
+
+
+        {isToggled ? <EXMenu /> : null}
+
       </div>
+
+
+      {setting_open ? <SettingCom /> : null}
+
+
     </div>
   );
 };

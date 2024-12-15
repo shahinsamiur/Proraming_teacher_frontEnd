@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
-
+import React, { useContext} from 'react';
+import { MyContext } from '../contextAPI';
 const ToggleButton = () => {
+
+    const {isToggled , setIsToggled}=useContext(MyContext)
+
+
+
     // State to manage toggle state
-    const [isToggled, setIsToggled] = useState(false);
+   
 
     // Toggle handler
     const toggleSwitch = () => setIsToggled(!isToggled);
