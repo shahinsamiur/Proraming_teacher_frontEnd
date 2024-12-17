@@ -65,6 +65,7 @@ const EditorPage = () => {
 
         socket.current.emit("reciving_the_anwser", { userData, transcript });
       } else if (userData.re_request === "stop_user_query") {
+        console.log("hit stop query ")
         socket.current.emit("stop_user_query", { userData, transcript });
       } else if (userData.re_request === "ask_querys_waiting") {
         // const newTimeoutId = setTimeout(() => {

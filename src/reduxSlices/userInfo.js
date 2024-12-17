@@ -16,7 +16,8 @@ const InitialValue = {
   imidiate:false,
   await:false,
   code_count:0,
-  asking_count:0
+  asking_count:0,
+  asking_query:false
 };
 
 export const userInfo = createSlice({
