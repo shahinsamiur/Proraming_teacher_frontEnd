@@ -15,14 +15,15 @@ import CodeSpace2 from '../components/v2/CodeSpace2';
 import EXMenu from '../components/v2/exMenu';
 import PresentationFull from '../components/v2/presentationFull';
 import SettingCom from '../components/setting_com';
-
-
+import AlertComponents from '../components/alert/alert';
+import HomeAlertComponents from '../components/alert/homeAlert';
+import CanvasFull from '../components/v2/canvasFull';
 const EditorPage = () => {
   const userData = useSelector((state) => state.UserInfo);
   const [ChangeSlide, setChangeSlide] = useState(null);
   const dispatch = useDispatch();
   const audioRef = useRef(null);
-  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC, setbotStatus, isToggled, simpleState, setting_open } = useContext(MyContext);
+  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC, setbotStatus, isToggled, simpleState, setting_open, alert } = useContext(MyContext);
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
   const [timeoutid, setTimeOutId] = useState(null);
   const [newTimeoutId_trans, setnewTimeoutId_trans] = useState(null);
@@ -147,7 +148,9 @@ const EditorPage = () => {
   }, [])
 
 
-
+  // useEffect(() => {
+  // console.log("this is an alert ",alert)
+  // }, [alert])
 
   useEffect(() => {
     if (!socket.current) {
@@ -237,7 +240,9 @@ const EditorPage = () => {
       <div className="w-[90vw] h-[90vh] bg-[#151515] rounded-lg p-[1.5vw] flex flex-col gap-[1vw]">
         {/* header */}
         <Header />
-        {isToggled && simpleState === "code" ? <CodeSpace2 /> : isToggled && simpleState === "presentation" ? <PresentationFull /> : < CodeSpace />}
+        {isToggled && simpleState === "code" ? <CodeSpace2 /> 
+        : isToggled && simpleState === "presentation" ? <PresentationFull /> 
+        :  isToggled && simpleState === "canvas" ? <CanvasFull />:<CodeSpace />}
 
 
         {isToggled ? <EXMenu /> : null}
@@ -246,7 +251,11 @@ const EditorPage = () => {
 
 
       {setting_open ? <SettingCom /> : null}
-
+      {alert === "logout" ? (
+        <AlertComponents />
+      ) : alert === "homeAlert" ? (
+        <HomeAlertComponents />
+      ) : null}
 
     </div>
   );

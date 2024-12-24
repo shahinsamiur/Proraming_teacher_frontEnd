@@ -10,6 +10,9 @@ const MyProvider = ({ children }) => {
   const audioRef = useRef(null); // Ref to store the audio source
   const [botStatus, setbotStatus] = useState("listening")
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition(); // Hook for speech recognition
+  const [ImageState , setImageState] =useState("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw8PDxUPDw8PDw8PDw8PDw8PDw8PDw8PFRUWFhURFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAMIBAwMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAAAAQIDB//EACMQAQEBAAEDAgcAAAAAAAAAAAABEQIhMbFx8AMSQVFhcpH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A9qVIAomqCKICoKAgAUACkRqAAAAAAYBoJdAIaQDVABLFATAAFRQRUAEVABQBFSwBRAVUAE1QGcagABFAAAVAEzr/AAqpQAIC1FSgGmACooAICgAyqRQRYAFS0AU0AMA0AAADAFRQAAAAQVAVBKDQgAqACoAAAaJgBGkkNABABUgKCAoAJFgYCpVQDipQEVAFRUBUCAJVSgoABAgFAAABFTAGkwUGQoCoqUFAAhQoAACouAipYQCwFBBQEFQAAARQAAKAAACCgAkABUoKJFAAAAAAAUAEVAAAUABIUAABFLEBRKsAEoCoAKJqggABe4AoAIoAAQAAFEAAqAoRQAASgACfXyoCRaAaIoJVABKoDO++g0AgeFAAACAAigAgKIsAAtARdQFgAKmgCFgUC1WZOu+rQCYoCKlWAIAKqKCKAMwIoCCgJFqQFAAqCgIoCYYKAlipQWKkAKYACKmgb5VIoCAASiAqooJhqpaB80+4534cQHWCpgLAACiggAJe60AAUEIUAKAAqUENKAaKlgEigAgAWooBFTCAqWKAmAApCkBUqoAqQAqoAKAIqKAimAgqABqAAWgESVQNUSwFTQoCoAqSiSg0Jq6AqAGCxARbTD8gRcTooGAAIoDPLnJfVoANSCSg0gAAAM8mtZkAigCggKVKoIsVAVLFATBUBNVMAasABGefaftAA4d63QAKACKAUAEIoCCgIACXuoAhQAqqAkRQCCgCAAKAzQAf/9k=")
+ 
+  
   const updateCode = (code) => {
     window.localStorage.setItem("code", code)
     setCode(code)
@@ -31,6 +34,7 @@ const MyProvider = ({ children }) => {
   const [isToggled, setIsToggled] = useState(false);
   const [simpleState, setsimpleState] = useState("presentation");
   const [setting_open, set_setting_open] = useState(false);
+  const [alert,setAlert]=useState(false)
   return (
     <MyContext.Provider value={{
       socket, code, updateCode,
@@ -43,7 +47,8 @@ const MyProvider = ({ children }) => {
       Slides, setSlides,
       timeoutidC, setTimeOutIdC, botStatus, setbotStatus,
       isToggled, setIsToggled,
-      simpleState, setsimpleState,setting_open, set_setting_open
+      simpleState, setsimpleState,setting_open, set_setting_open,alert,setAlert,
+      ImageState,setImageState
     }
     }>
       {children}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { IoHomeOutline } from "react-icons/io5";
 import { CiSettings } from "react-icons/ci";
 import { MdLogout } from "react-icons/md";
@@ -8,20 +8,23 @@ import {useContext } from "react";
 import { MyContext } from '../../contextAPI';
 
 export default function Menu() {
-    const {setting_open, set_setting_open}=useContext(MyContext)
+    const {setting_open, set_setting_open, alert, setAlert}=useContext(MyContext)
 
-
-    const handle_logout=()=>{
-        alert("Logout function is not availabe right now ")
+    const handle_logout = () => {
+        if(alert==="logout")setAlert(false)
+            else setAlert("logout")
+        
     }
-
     const handle_setting=()=>{
         if(setting_open) set_setting_open(false)
         else set_setting_open(true)
     }
 
 
-
+    const handle_home=()=>{
+        if(alert==="homeAlert") setAlert(false)
+            else setAlert("homeAlert")
+    }
 
     return (
         <div className="w-[2.42vw] h-[90vh] bg-[#151515] rounded-lg  py-[1.5vw]">
@@ -29,9 +32,11 @@ export default function Menu() {
                 <div className="w-[1.5vw] h-[1.5vw] bg-gray-300   flex justify-center items-center overflow-hidden">
                     <img src='/icons/logo.svg' alt='logo' className='w-[100%]  h-[100%]' />
                 </div>
-                <Link to={"/"}>
-                <IoHomeOutline className='w-[1.5vw] h-[1.5vw] text-[#08618e]  rounded-full cursor-pointer' />
-                </Link>
+                
+                <IoHomeOutline className='w-[1.5vw] h-[1.5vw] text-[#08618e]  rounded-full cursor-pointer' 
+                onClick={handle_home}
+                />
+                
 
 
                 <CiSettings className='w-[2vw] h-[2vw] text-[#08618e]  rounded-full cursor-pointer' onClick={handle_setting}/>
@@ -48,6 +53,8 @@ export default function Menu() {
 
 
             </div>
+
+
         </div>
 
     )

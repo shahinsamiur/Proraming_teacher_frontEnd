@@ -15,7 +15,7 @@ import { MdLogout } from "react-icons/md";
 export default function menu() {
   
   
-  
+
   
   
   return (
@@ -29,6 +29,8 @@ export default function menu() {
       <div className='w-full h-[10%]  flex flex-col  items-center'>
         <MdLogout className='text-[2vw] text-gray-400 cursor-pointer' />
       </div>
+
+
     </div>
   )
 }
