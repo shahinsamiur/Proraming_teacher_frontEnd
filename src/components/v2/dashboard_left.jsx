@@ -57,11 +57,13 @@ export default function DashboardLeft() {
 
                 {/* infoes  */}
                 <div className="flex flex-wrap gap-4  p-4">
-                    {data.map((data) => {
-                        return (
-                            <NameCard fild_name={data.fild_name} value={data.value} />
-                        )
-                    })}
+                {data.map((item, index) => (
+                        <NameCard 
+                            key={index} // Add a unique key here
+                            fild_name={item.fild_name} 
+                            value={item.value} 
+                        />
+                    ))}
                 </div>
 
 

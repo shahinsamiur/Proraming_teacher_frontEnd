@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function Course() {
 
-    const Alert=()=>{
+    const Alert = () => {
         alert("this function is not availabe now ")
     }
     return (
@@ -11,12 +11,11 @@ export default function Course() {
 
 
             <div className='w-[30%] '>
-                <img src='/icons/python-logo.png' alt='error' className='w-[100%]'/>
+                <img src='/icons/python-logo.png' alt='error' className='w-[100%]' />
             </div>
 
             <div className='flex flex-col gap-[1vh]'>
                 <h1 className='text-[1vw]'>Python basic Course</h1>
-                <p className='text-[0.8vw]'>Lorem Ipsum is simply dummy text of the printing and typesetti......</p>
                 <div className='w-full flex flex-row justify-between'>
                     <Link to="/editor" className='bg-[#7456F1] h-[5vh] w-[40%] text-[1vw] flex justify-center items-center rounded-lg'>Start Class
                     </Link>

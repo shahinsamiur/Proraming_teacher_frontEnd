@@ -1,21 +1,21 @@
-import React, { useContext} from 'react';
+import React, { useContext } from 'react';
 import { MyContext } from '../contextAPI';
 const ToggleButton = () => {
 
-    const {isToggled , setIsToggled}=useContext(MyContext)
+    const { isToggled, setIsToggled } = useContext(MyContext)
 
 
 
     // State to manage toggle state
-   
+
 
     // Toggle handler
     const toggleSwitch = () => setIsToggled(!isToggled);
 
     return (
         <div className="flex items-center ">
-            <span className="text-[1.4vw] font-thin w-[6vw]  text-center">
-                {isToggled ? 'Flowing' : 'Flow'}
+            <span className= {`text-[1.4vw]  w-[7vw] font-thin  ${isToggled ? "text-center" : "text-left"}`}>
+                {isToggled ? 'Simple' : 'Combined'}
             </span>
             <button
                 onClick={toggleSwitch}

@@ -35,12 +35,12 @@ export default function SelectComponent  ({ options, selectedValue, onChange, pl
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute z-10 mt-2 w-full border border-gray-300 rounded bg-[#101010] shadow-md">
+        <div className="absolute z-10 mt-2 w-full border-[0.1vw] border-[#2C2C2C]  rounded bg-[rgba(21,21,21,1)] shadow-md">
           {options.map((option) => (
             <div
               key={option.value}
-              className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${
-                selectedValue === option.value ? "bg-gray-100 font-semibold" : ""
+              className={`px-4 py-2 cursor-pointer hover:bg-[#08618E] ${
+                selectedValue === option.value ? "bg-[#08618E] font-semibold" : ""
               }`}
               onClick={() => handleSelect(option.value)}
             >

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useSpeechRecognition } from 'react-speech-recognition';
 const MyContext = createContext(null);
 
@@ -10,9 +10,42 @@ const MyProvider = ({ children }) => {
   const audioRef = useRef(null); // Ref to store the audio source
   const [botStatus, setbotStatus] = useState("listening")
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition(); // Hook for speech recognition
-  const [ImageState , setImageState] =useState("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw8PDxUPDw8PDw8PDw8PDw8PDw8PDw8PFRUWFhURFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAMIBAwMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAAAAQIDB//EACMQAQEBAAEDAgcAAAAAAAAAAAABEQIhMbFx8AMSQVFhcpH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A9qVIAomqCKICoKAgAUACkRqAAAAAAYBoJdAIaQDVABLFATAAFRQRUAEVABQBFSwBRAVUAE1QGcagABFAAAVAEzr/AAqpQAIC1FSgGmACooAICgAyqRQRYAFS0AU0AMA0AAADAFRQAAAAQVAVBKDQgAqACoAAAaJgBGkkNABABUgKCAoAJFgYCpVQDipQEVAFRUBUCAJVSgoABAgFAAABFTAGkwUGQoCoqUFAAhQoAACouAipYQCwFBBQEFQAAARQAAKAAACCgAkABUoKJFAAAAAAAUAEVAAAUABIUAABFLEBRKsAEoCoAKJqggABe4AoAIoAAQAAFEAAqAoRQAASgACfXyoCRaAaIoJVABKoDO++g0AgeFAAACAAigAgKIsAAtARdQFgAKmgCFgUC1WZOu+rQCYoCKlWAIAKqKCKAMwIoCCgJFqQFAAqCgIoCYYKAlipQWKkAKYACKmgb5VIoCAASiAqooJhqpaB80+4534cQHWCpgLAACiggAJe60AAUEIUAKAAqUENKAaKlgEigAgAWooBFTCAqWKAmAApCkBUqoAqQAqoAKAIqKAimAgqABqAAWgESVQNUSwFTQoCoAqSiSg0Jq6AqAGCxARbTD8gRcTooGAAIoDPLnJfVoANSCSg0gAAAM8mtZkAigCggKVKoIsVAVLFATBUBNVMAasABGefaftAA4d63QAKACKAUAEIoCCgIACXuoAhQAqqAkRQCCgCAAKAzQAf/9k=")
- 
-  
+  const [ImageState, setImageState] = useState("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw8PDxUPDw8PDw8PDw8PDw8PDw8PDw8PFRUWFhURFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAMIBAwMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAAAAQIDB//EACMQAQEBAAEDAgcAAAAAAAAAAAABEQIhMbFx8AMSQVFhcpH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A9qVIAomqCKICoKAgAUACkRqAAAAAAYBoJdAIaQDVABLFATAAFRQRUAEVABQBFSwBRAVUAE1QGcagABFAAAVAEzr/AAqpQAIC1FSgGmACooAICgAyqRQRYAFS0AU0AMA0AAADAFRQAAAAQVAVBKDQgAqACoAAAaJgBGkkNABABUgKCAoAJFgYCpVQDipQEVAFRUBUCAJVSgoABAgFAAABFTAGkwUGQoCoqUFAAhQoAACouAipYQCwFBBQEFQAAARQAAKAAACCgAkABUoKJFAAAAAAAUAEVAAAUABIUAABFLEBRKsAEoCoAKJqggABe4AoAIoAAQAAFEAAqAoRQAASgACfXyoCRaAaIoJVABKoDO++g0AgeFAAACAAigAgKIsAAtARdQFgAKmgCFgUC1WZOu+rQCYoCKlWAIAKqKCKAMwIoCCgJFqQFAAqCgIoCYYKAlipQWKkAKYACKmgb5VIoCAASiAqooJhqpaB80+4534cQHWCpgLAACiggAJe60AAUEIUAKAAqUENKAaKlgEigAgAWooBFTCAqWKAmAApCkBUqoAqQAqoAKAIqKAimAgqABqAAWgESVQNUSwFTQoCoAqSiSg0Jq6AqAGCxARbTD8gRcTooGAAIoDPLnJfVoANSCSg0gAAAM8mtZkAigCggKVKoIsVAVLFATBUBNVMAasABGefaftAA4d63QAKACKAUAEIoCCgIACXuoAhQAqqAkRQCCgCAAKAzQAf/9k=")
+  const [EditorSetting, setEditorSetting] = useState({
+
+  });
+
+
+  useLayoutEffect(() => {
+    if (localStorage.getItem("editorSettings")) {
+      setEditorSetting(JSON.parse(localStorage.getItem("editorSettings")))
+    } else {
+
+      var data = {
+        theme: "monokai",
+        fontSize: "12",
+        languageMode: "Python",
+        showGutter: false,
+        showLineNumbers: false,
+        enableBasicAutocomplete: false,
+        enableLiveAutocomplete: false,
+        showPrintMargin: false,
+        highlightActiveLine: false,
+        enableSnippets: false
+      }
+
+
+      setEditorSetting(data)
+      localStorage.setItem("editorSettings",JSON.stringify(data))
+    }
+
+
+
+  }, [])
+
+
+
+
   const updateCode = (code) => {
     window.localStorage.setItem("code", code)
     setCode(code)
@@ -34,7 +67,7 @@ const MyProvider = ({ children }) => {
   const [isToggled, setIsToggled] = useState(false);
   const [simpleState, setsimpleState] = useState("presentation");
   const [setting_open, set_setting_open] = useState(false);
-  const [alert,setAlert]=useState(false)
+  const [alert, setAlert] = useState(false)
   return (
     <MyContext.Provider value={{
       socket, code, updateCode,
@@ -47,8 +80,8 @@ const MyProvider = ({ children }) => {
       Slides, setSlides,
       timeoutidC, setTimeOutIdC, botStatus, setbotStatus,
       isToggled, setIsToggled,
-      simpleState, setsimpleState,setting_open, set_setting_open,alert,setAlert,
-      ImageState,setImageState
+      simpleState, setsimpleState, setting_open, set_setting_open, alert, setAlert,
+      ImageState, setImageState, EditorSetting, setEditorSetting
     }
     }>
       {children}

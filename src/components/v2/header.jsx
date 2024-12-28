@@ -42,7 +42,7 @@ export default function Header() {
                 </div>
 
 
-                <div onClick={onRun} className='w-[2vw] h-[2vw] flex flex-row justify-center cursor-pointer items-center rounded-full '>
+                <div onClick={onRun} className='w-[2vw] h-[2vw]  rounded-full flex flex-row justify-center cursor-pointer items-center  '>
                     <IoMdPlay className='text-gray-300' />
                 </div>
 

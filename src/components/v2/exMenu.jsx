@@ -25,7 +25,7 @@ export default function ExMenu() {
   const TrigerBrowser = () => {
     setsimpleState("inbox")
   }
-
+ 
   return (
     <div className='bg-[#151515] p-[0.3vw] border-[0.01vw] border-[#2f2f2f] w-[15vw] h-[5%] gap-[3vw] top-[86vh] right-[44vw] rounded-md absolute z-50 flex items-center justify-center'
     >
