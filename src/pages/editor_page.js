@@ -70,19 +70,22 @@ const EditorPage = () => {
           console.log("ask_querys:");
         }, 5000);
       } else if (userData.re_request === "ask_querys_waiting" && free_to_request.current === true) {
-        console.warn("ask_querys_waiting is worried")
         const newTimeoutId = setTimeout(() => {
           if (transcript.length > 1) {
+            console.warn("ask_querys_waiting is if", transcript.length)
+
             socket.current.emit("ask_querys_waiting", { userData, transcript });
             free_to_request.current = false
 
           } else {
+            console.warn("ask_querys_waiting is else")
             socket.current.emit("user_no_response", { userData });
             free_to_request.current = false
 
           }
-          console.log("ask_querys_waiting:");
+          
         }, 5000);
+        setTimeOutId(newTimeoutId);
       }
       console.log("this is transcript:", transcript);
       if (timeoutid) clearTimeout(timeoutid);

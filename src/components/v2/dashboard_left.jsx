@@ -45,7 +45,7 @@ export default function DashboardLeft() {
         <div className='w-1/2  h-full '>
 
             {/* user info section  */}
-            <div className='w-full font-thin p-[1vw]  h-2/4 border-[0.2vw] border-[#2F2F2F]'>
+            <div className='w-full font-thin p-[1vw]  h-auto border-[0.2vw] border-[#2F2F2F]'>
                 {/* header  */}
                 <div className='w-full h-auto flex flex-row  justify-between'>
                     <div className='flex flex-row gap-[0.5vw] items-center justify-center'>
@@ -56,7 +56,7 @@ export default function DashboardLeft() {
                 </div>
 
                 {/* infoes  */}
-                <div className="flex flex-wrap gap-4  p-4">
+                {/* <div className="flex flex-wrap gap-4  p-4">
                 {data.map((item, index) => (
                         <NameCard 
                             key={index} // Add a unique key here
@@ -64,7 +64,7 @@ export default function DashboardLeft() {
                             value={item.value} 
                         />
                     ))}
-                </div>
+                </div> */}
 
 
 

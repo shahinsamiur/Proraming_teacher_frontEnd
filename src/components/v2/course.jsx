@@ -14,10 +14,10 @@ export default function Course() {
                 <img src='/icons/python-logo.png' alt='error' className='w-[100%]' />
             </div>
 
-            <div className='flex flex-col gap-[1vh]'>
-                <h1 className='text-[1vw]'>Python basic Course</h1>
+            <div className='flex flex-col w-full gap-[1vh] '>
+                <h1 className='text-[1vw] text-center'>Python basic Course</h1>
                 <div className='w-full flex flex-row justify-between'>
-                    <Link to="/editor" className='bg-[#7456F1] h-[5vh] w-[40%] text-[1vw] flex justify-center items-center rounded-lg'>Start Class
+                    <Link to="/editor" className='bg-[#7456F1] flex h-[5vh] w-[40%] text-[1vw]  justify-center items-center rounded-lg'>Start Class
                     </Link>
                     <button className='bg-[#00BAFF] h-[5vh] w-[40%] text-[1vw] rounded-lg' onClick={Alert}>Learn More</button>
                 </div>
