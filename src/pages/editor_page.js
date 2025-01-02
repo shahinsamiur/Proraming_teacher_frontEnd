@@ -19,12 +19,14 @@ import AlertComponents from '../components/alert/alert';
 import HomeAlertComponents from '../components/alert/homeAlert';
 import CanvasFull from '../components/v2/canvasFull';
 import InboxFull from '../components/v2/inbox_full';
+import { useNavigate } from 'react-router-dom';
+
 const EditorPage = () => {
   const userData = useSelector((state) => state.UserInfo);
   const [ChangeSlide, setChangeSlide] = useState(null);
   const dispatch = useDispatch();
   const audioRef = useRef(null);
-  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC, setbotStatus, isToggled, simpleState, setting_open, alert } = useContext(MyContext);
+  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC,isUserIterect, setbotStatus, botStatus,isToggled, simpleState, setting_open, alert } = useContext(MyContext);
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
   const [timeoutid, setTimeOutId] = useState(null);
   const [newTimeoutId_trans, setnewTimeoutId_trans] = useState(null);
@@ -33,19 +35,23 @@ const EditorPage = () => {
   const playing_audio_Ref = useRef(false);
   const free_to_request = useRef(false);
 
-  useEffect(() => {
-
-  }, [userData])
 
 
+const navigate=useNavigate()
+
+useEffect(()=>{
+  if(!isUserIterect) navigate("/")
+},[])
   useEffect(() => {
     const handleRequest = async () => {
       if (userData.await === true) {
+        free_to_request.current = false
         await new Promise((resolve) => setTimeout(resolve, 4000)); // 4-second delay
       }
 
       if (userData.extra_explain) {
-        socket.current.emit("extra_explain", { userData, transcript });
+        socket.current.emit("extra_explain", { userData, Slides });
+        free_to_request.current = false
       }
 
       if (userData.re_request === true) {
@@ -62,19 +68,20 @@ const EditorPage = () => {
       } else if (userData.re_request === "stop_user_query") {
         console.log("hit stop query ");
         socket.current.emit("stop_user_query", { userData, transcript });
+        free_to_request.current = false
       } else if (userData.re_request === "ask_querys") {
         const newTimeoutId = setTimeout(() => {
           socket.current.emit("ask_querys", { userData, transcript });
-
+          free_to_request.current = false
 
           console.log("ask_querys:");
         }, 5000);
-      } else if (userData.re_request === "ask_querys_waiting" && free_to_request.current === true) {
+      } else if (userData.re_request === "ask_querys_waiting" ) {
         const newTimeoutId = setTimeout(() => {
           if (transcript.length > 1) {
             console.warn("ask_querys_waiting is if", transcript.length)
 
-            socket.current.emit("ask_querys_waiting", { userData, transcript });
+            socket.current.emit("ask_querys_waiting", { userData, transcript,Slides });
             free_to_request.current = false
 
           } else {
@@ -93,6 +100,7 @@ const EditorPage = () => {
       if (userData.current_program === "waiting_for_wish_response" && isListeningRef.current) {
         const newTimeoutId = setTimeout(() => {
           socket.current.emit("reciving_the_anwser", { userData, transcript: transcript });
+          free_to_request.current = false
           console.log("waiting_for_wish_response:");
         }, 5000);
         setTimeOutId(newTimeoutId);
@@ -100,11 +108,13 @@ const EditorPage = () => {
         const newTimeoutId = setTimeout(() => {
           console.log("intro_question:");
           socket.current.emit("reciving_the_anwser", { userData, transcript });
+          free_to_request.current = false
         }, 5000);
         setTimeOutId(newTimeoutId);
       } else if (userData.current_program === "intro_question_anwser_waiting" && isListeningRef.current) {
         console.log("intro_question_anwser_waiting");
         const newTimeoutId = setTimeout(() => {
+          free_to_request.current = false
           if (transcript && transcript.length > 2) {
             socket.current.emit("reciving_the_anwser", { userData, transcript });
           } else {
@@ -114,6 +124,7 @@ const EditorPage = () => {
         setTimeOutId(newTimeoutId);
       } else if (userData.current_program === "after_class_question_waiting") {
         const newTimeoutId = setTimeout(() => {
+          free_to_request.current = false
           socket.current.emit("after_class_question_recived", { userData, transcript: "good morning" });
           console.log("after_class_question_waiting:");
         }, 5000);
@@ -139,7 +150,9 @@ const EditorPage = () => {
         setTimeOutIdC(newTimeoutId);
       }
     };
-    handleRequest();
+
+      handleRequest();
+
   }, [userData, transcript]);
 
 
@@ -150,7 +163,7 @@ const EditorPage = () => {
     console.log("this is bot status :", playing_audio_Ref.current);
     if (playing_audio_Ref.current === true) setbotStatus("speacking");
     else setbotStatus("listening");
-  }, []);
+  }, [playing_audio_Ref.current]);
 
 
 
@@ -164,6 +177,7 @@ const EditorPage = () => {
         if (data === "slides") {
           console.log("slides data got");
           setChangeSlide(true);
+          free_to_request.current = true
         }
         if (data.imidiate === true) {
           let data_temp = data;

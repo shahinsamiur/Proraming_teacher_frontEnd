@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 import { MyContext } from "../../contextAPI"
 import { IoMdClose } from "react-icons/io";
+import { useNavigate } from 'react-router-dom';
 export default function Alert() {
-
-    const { alert, setAlert } = useContext(MyContext)
+    const navigate = useNavigate();
+    const { setAlert } = useContext(MyContext)
     const handleClick = () => {
-        if (alert) setAlert(false)
-        else setAlert(true)
+        navigate("/")
+        setAlert(false)
 
     }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CiLogout } from "react-icons/ci";
 import DashboardLeft from "../components/v2/dashboard_left"
 import DashboardRight from "../components/v2/dashboard_right"
@@ -7,8 +7,10 @@ import { useContext } from "react";
 import AlertComponents from '../components/alert/alert';
 import HomeAlertComponents from '../components/alert/homeAlert';
 
+
 export default function Dash() {
-  const { alert, setAlert } = useContext(MyContext);
+  const { alert, setAlert  } = useContext(MyContext);
+
 
   const handle_logout = () => {
     if (alert === "logout") setAlert(false)

@@ -5,6 +5,7 @@ const MyContext = createContext(null);
 
 const MyProvider = ({ children }) => {
   const socket = useRef(null);
+  const [isUserIterect, setisUserIterect] = useState(false)
   const [code, setCode] = useState(); // save code , code will save in localstorage 
   const [socket_handler, setSocket_handler] = useState("")
   const audioRef = useRef(null); // Ref to store the audio source
@@ -36,7 +37,7 @@ const MyProvider = ({ children }) => {
 
 
       setEditorSetting(data)
-      localStorage.setItem("editorSettings",JSON.stringify(data))
+      localStorage.setItem("editorSettings", JSON.stringify(data))
     }
 
 
@@ -81,7 +82,7 @@ const MyProvider = ({ children }) => {
       timeoutidC, setTimeOutIdC, botStatus, setbotStatus,
       isToggled, setIsToggled,
       simpleState, setsimpleState, setting_open, set_setting_open, alert, setAlert,
-      ImageState, setImageState, EditorSetting, setEditorSetting
+      ImageState, setImageState, EditorSetting, setEditorSetting, isUserIterect, setisUserIterect
     }
     }>
       {children}

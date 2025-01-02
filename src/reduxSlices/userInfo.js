@@ -18,7 +18,8 @@ const InitialValue = {
   code_count: 0,
   asking_count: 0,
   asking_query: false,
-  extra_explain: false
+  extra_explain: false,
+  is_extra_explained:false
 };
 
 export const userInfo = createSlice({
