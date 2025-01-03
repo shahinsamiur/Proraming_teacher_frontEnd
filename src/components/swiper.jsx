@@ -93,13 +93,13 @@ export default function Slider() {
 
       </Swiper>
 
-      <div className="w-[50%] rounded-lg h-[5vh] flex flex-row justify-center items-center border-2 gap-[30%]">
+      <div className="w-[50%] rounded-lg h-[5vh] flex flex-row justify-center items-center border-[0.02vw] border-[#474747] gap-[30%]">
         <IoIosArrowBack
-          className="text-[1.4vw] text-gray-400 cursor-pointer"
+          className="text-[1.4vw] text-[#474747] cursor-pointer"
           onClick={handlePrevSlide} // Go to previous slide on click
         />
         <IoIosArrowForward
-          className="text-[1.4vw] text-gray-400 cursor-pointer"
+          className="text-[1.4vw] text-[#474747] cursor-pointer"
           onClick={handleNextSlide} // Go to next slide on click
         />
 

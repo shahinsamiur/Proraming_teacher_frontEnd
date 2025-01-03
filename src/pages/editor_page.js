@@ -60,8 +60,13 @@ useEffect(()=>{
           setSlides(Slides + 1);
           setChangeSlide(false);
         }
+
+
         if (userData.current_program === "after_class_question") {
-          socket.current.emit("after_class_question", { userData });
+          const newTimeoutId = setTimeout(() => {
+            socket.current.emit("after_class_question", { userData,transcript });
+          }, 2000);
+          setTimeOutId(newTimeoutId);
         }
 
         socket.current.emit("reciving_the_anwser", { userData, transcript });
@@ -125,9 +130,14 @@ useEffect(()=>{
       } else if (userData.current_program === "after_class_question_waiting") {
         const newTimeoutId = setTimeout(() => {
           free_to_request.current = false
-          socket.current.emit("after_class_question_recived", { userData, transcript: "good morning" });
+          socket.current.emit("after_class_question_recived", { userData, transcript });
           console.log("after_class_question_waiting:");
         }, 5000);
+        setTimeOutId(newTimeoutId);
+      }else if(userData.current_program === "feedBack"){
+        const newTimeoutId = setTimeout(() => {
+          socket.current.emit("feedBack", { userData, transcript });
+        }, 3000);
         setTimeOutId(newTimeoutId);
       }
 
