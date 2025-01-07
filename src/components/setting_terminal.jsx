@@ -56,6 +56,7 @@ export default function SettingEditor() {
                     selectedValue={selectedFont}
                     options={options_font}
                     onChange={setSelectedFont}
+                    
                 />
             </div>
 

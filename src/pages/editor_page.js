@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { MyContext } from '../contextAPI';
 import io from 'socket.io-client';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
@@ -20,13 +20,22 @@ import HomeAlertComponents from '../components/alert/homeAlert';
 import CanvasFull from '../components/v2/canvasFull';
 import InboxFull from '../components/v2/inbox_full';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import { BsEmojiTear } from "react-icons/bs";
+
+
+
+
+
+
 
 const EditorPage = () => {
   const userData = useSelector((state) => state.UserInfo);
   const [ChangeSlide, setChangeSlide] = useState(null);
   const dispatch = useDispatch();
   const audioRef = useRef(null);
-  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC,isUserIterect, setbotStatus, botStatus,isToggled, simpleState, setting_open, alert } = useContext(MyContext);
+  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC, isUserIterect, setbotStatus, botStatus, isToggled, simpleState, setting_open, alert } = useContext(MyContext);
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
   const [timeoutid, setTimeOutId] = useState(null);
   const [newTimeoutId_trans, setnewTimeoutId_trans] = useState(null);
@@ -37,11 +46,43 @@ const EditorPage = () => {
 
 
 
-const navigate=useNavigate()
+  const navigate = useNavigate()
 
-useEffect(()=>{
-  if(!isUserIterect) navigate("/")
-},[])
+  useLayoutEffect(() => {
+    const checkCookie = async () => {
+      try {
+        // Check if the cookie exists
+        const cookie = await Cookies.get("user");
+        if (cookie !== undefined) {
+          // Send the cookie to the backend for validation
+          console.log(cookie)
+          const response = await axios.post("http://localhost:500/checkcookie", { "cookie": cookie });
+
+          // Handle invalid cookie
+          console.log("cookies_check", response.status)
+          if (response.status === 404) {
+            Cookies.remove("user"); // Remove the invalid cookie
+            navigate("/signin"); // Redirect to sign-in page
+          }
+        } else {
+          // Redirect to sign-in if cookie is not present
+          navigate("/signin");
+        }
+      } catch (error) {
+        console.error("Error validating cookie:", error);
+        navigate("/signin"); // Redirect in case of an error
+      }
+    };
+
+    // Call the async function
+    checkCookie();
+  }, [navigate]);
+
+
+
+  useEffect(() => {
+    if (!isUserIterect) navigate("/")
+  }, [])
   useEffect(() => {
     const handleRequest = async () => {
       if (userData.await === true) {
@@ -64,10 +105,10 @@ useEffect(()=>{
 
         if (userData.current_program === "after_class_question") {
           const newTimeoutId = setTimeout(() => {
-            socket.current.emit("after_class_question", { userData,transcript });
+            socket.current.emit("after_class_question", { userData, transcript });
           }, 2000);
           setTimeOutId(newTimeoutId);
-        } 
+        }
 
         socket.current.emit("reciving_the_anwser", { userData, transcript });
       } else if (userData.re_request === "stop_user_query") {
@@ -81,12 +122,12 @@ useEffect(()=>{
 
           console.log("ask_querys:");
         }, 5000);
-      } else if (userData.re_request === "ask_querys_waiting" ) {
+      } else if (userData.re_request === "ask_querys_waiting") {
         const newTimeoutId = setTimeout(() => {
           if (transcript.length > 1) {
             console.warn("ask_querys_waiting is if", transcript.length)
 
-            socket.current.emit("ask_querys_waiting", { userData, transcript,Slides });
+            socket.current.emit("ask_querys_waiting", { userData, transcript, Slides });
             free_to_request.current = false
 
           } else {
@@ -95,12 +136,12 @@ useEffect(()=>{
             free_to_request.current = false
 
           }
-          
+
         }, 5000);
         setTimeOutId(newTimeoutId);
-      } else if (userData.re_request === "Finished_the_class" ) {
+      } else if (userData.re_request === "Finished_the_class") {
         socket.current.emit("Finished_the_class", { userData, transcript });
-        
+
       }
       console.log("this is transcript:", transcript);
       if (timeoutid) clearTimeout(timeoutid);
@@ -134,10 +175,10 @@ useEffect(()=>{
         const newTimeoutId = setTimeout(() => {
           free_to_request.current = false
           socket.current.emit("after_class_question_recived", { userData, transcript });
-          console.log("after_class_question_waiting:",transcript);
+          console.log("after_class_question_waiting:", transcript);
         }, 5000);
         setTimeOutId(newTimeoutId);
-      }else if(userData.current_program === "feedBack"){
+      } else if (userData.current_program === "feedBack") {
         const newTimeoutId = setTimeout(() => {
           socket.current.emit("feedBack", { userData, transcript });
         }, 3000);
@@ -164,7 +205,7 @@ useEffect(()=>{
       }
     };
 
-      handleRequest();
+    handleRequest();
 
   }, [userData, transcript]);
 
@@ -255,33 +296,49 @@ useEffect(()=>{
   }
 
   return (
-    <div
-      className="bg-[#101010] w-full
-                         h-screen flex justify-center 
+
+
+    <>
+
+
+      <div
+        className="bg-[#101010] w-full hidden
+                         h-screen lg:flex justify-center 
                          overflow-hidden p-1 gap-[1vw] 
                          items-center text-white"
-    >
-      <Menu />
-      <div className="w-[90vw] h-[90vh] bg-[#151515] rounded-lg p-[1.5vw] flex flex-col gap-[1vw]">
-        <Header />
-        {isToggled && simpleState === "code" ? (
-          <CodeSpace2 />
-        ) : isToggled && simpleState === "presentation" ? (
-          <PresentationFull />
-        ) : isToggled && simpleState === "canvas" ? (
-          <CanvasFull />
-        ) : isToggled && simpleState === "inbox" ? (
-          <InboxFull />
-        ) : <CodeSpace />}
-        {isToggled ? <EXMenu /> : null}
+      >
+        <Menu />
+        <div className="w-[90vw] h-[90vh] bg-[#151515] rounded-lg p-[1.5vw] flex flex-col gap-[1vw]">
+          <Header />
+          {isToggled && simpleState === "code" ? (
+            <CodeSpace2 />
+          ) : isToggled && simpleState === "presentation" ? (
+            <PresentationFull />
+          ) : isToggled && simpleState === "canvas" ? (
+            <CanvasFull />
+          ) : isToggled && simpleState === "inbox" ? (
+            <InboxFull />
+          ) : <CodeSpace />}
+          {isToggled ? <EXMenu /> : null}
+        </div>
+        {setting_open ? <SettingCom /> : null}
+        {alert === "logout" ? (
+          <AlertComponents />
+        ) : alert === "homeAlert" ? (
+          <HomeAlertComponents />
+        ) : null}
       </div>
-      {setting_open ? <SettingCom /> : null}
-      {alert === "logout" ? (
-        <AlertComponents />
-      ) : alert === "homeAlert" ? (
-        <HomeAlertComponents />
-      ) : null}
-    </div>
+
+      <div className='bg-[#101010] flex flex-col gap-[5vh] justify-center w-screen h-screen  items-center lg:hidden'>
+
+        <BsEmojiTear className='text-[15vw] text-white/70' />
+        <h1 className='text-center w-[70%] text-white/70 text-[4vw]'>We are really sorry, currently, we are available for computers only</h1>
+
+      </div>
+
+
+
+    </>
   );
 };
 

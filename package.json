@@ -14,6 +14,8 @@
     "ace-builds": "^1.35.2",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
     "keep-react": "^1.6.1",
     "react": "^18.3.1",
     "react-ace": "^12.0.0",

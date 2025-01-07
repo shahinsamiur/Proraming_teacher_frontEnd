@@ -28,7 +28,7 @@ export default function TerminalPage() {
             <div className="w-[90vw] h-[90vh] bg-[#151515] rounded-lg p-[1.5vw] flex flex-col gap-[1vw]">
                 {/* header */}
                 <Header />
-                {isToggled && simpleState=="code"?<CodeSpace2 />:isToggled && simpleState=="presentation"?<PresentationFull />:< CodeSpace />}
+                {isToggled && simpleState==="code"?<CodeSpace2 />:isToggled && simpleState==="presentation"?<PresentationFull />:< CodeSpace />}
 
 
                 {isToggled?<EXMenu />:null}

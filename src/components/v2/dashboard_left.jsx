@@ -2,6 +2,7 @@ import React from 'react'
 import { CgProfile } from "react-icons/cg";
 import { FaEdit } from "react-icons/fa";
 import NameCard from './nameCard';
+import { useSelector } from 'react-redux';
 import Course from './course';
 
 
@@ -35,8 +36,7 @@ export default function DashboardLeft() {
         },
     ]
 
-
-
+    const userData = useSelector((state) => state.UserInfo);
 
 
 
@@ -50,7 +50,7 @@ export default function DashboardLeft() {
                 <div className='w-full h-auto flex flex-row  justify-between'>
                     <div className='flex flex-row gap-[0.5vw] items-center justify-center'>
                         <CgProfile className='text-[2.5vw]  ' />
-                        <h1 className='text-[1.2vw]'>samiur shahin</h1>
+                        <h1 className='text-[1.2vw]'>{userData.name}</h1>
                     </div>
                     <FaEdit className='text-[1.5vw] text-[#0087FF] cursor-pointer' />
                 </div>
