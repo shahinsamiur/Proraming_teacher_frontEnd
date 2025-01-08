@@ -56,7 +56,7 @@ const EditorPage = () => {
         if (cookie !== undefined) {
           // Send the cookie to the backend for validation
           console.log(cookie)
-          const response = await axios.post("http://localhost:500/checkcookie", { "cookie": cookie });
+          const response = await axios.post("https://nextpie-app-nodejs-server.vercel.app/checkcookie", { "cookie": cookie });
 
           // Handle invalid cookie
           console.log("cookies_check", response.status)

@@ -29,12 +29,11 @@ export default function Dash() {
         const cookie = Cookies.get("user");
         if (cookie !== undefined) {
           // Send the cookie to the backend for validation
-          const response = await axios.post("http://localhost:500/checkcookie", { "cookie": cookie });
+          const response = await axios.post("https://nextpie-app-nodejs-server.vercel.app/checkcookie", { "cookie": cookie });
           var date = getTime()
           // Handle invalid cookie
           if (response.status === 200) {
             response.data.date = date
-            console.log(response.data)
             dispatch(update_User_data(response.data))
           }
         } else {
@@ -43,7 +42,6 @@ export default function Dash() {
           navigate("/signin");
         }
       } catch (error) {
-        console.error("Error validating cookie:", error);
         navigate("/signin"); // Redirect in case of an error
       }
     };
