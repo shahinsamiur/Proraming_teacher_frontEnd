@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoIosSend } from "react-icons/io";
-import "../../App.css"
+import "../App.css"
 
 
 

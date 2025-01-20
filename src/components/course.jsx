@@ -1,6 +1,6 @@
 import React ,{useContext}from 'react'
 import { Link } from 'react-router-dom'
-import { MyContext } from '../../contextAPI'
+import { MyContext } from '../contextAPI'
 export default function Course() {
     const { setisUserIterect } = useContext(MyContext);
 

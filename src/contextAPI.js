@@ -23,15 +23,15 @@ const MyProvider = ({ children }) => {
     } else {
 
       var data = {
-        theme: "monokai",
-        fontSize: "12",
-        languageMode: "Python",
-        showGutter: false,
-        showLineNumbers: false,
+        theme: "twilight",
+        fontSize: 12,
+        languageMode: "python",
+        showGutter: true,
+        showLineNumbers: true,
         enableBasicAutocomplete: false,
         enableLiveAutocomplete: false,
         showPrintMargin: false,
-        highlightActiveLine: false,
+        highlightActiveLine: true,
         enableSnippets: false
       }
 
@@ -66,7 +66,7 @@ const MyProvider = ({ children }) => {
   const [Slides, setSlides] = useState(0)
   const [timeoutidC, setTimeOutIdC] = useState(null)
   const [isToggled, setIsToggled] = useState(false);
-  const [simpleState, setsimpleState] = useState("presentation");
+  const [simpleState, setsimpleState] = useState("code");
   const [setting_open, set_setting_open] = useState(false);
   const [alert, setAlert] = useState(false)
   return (

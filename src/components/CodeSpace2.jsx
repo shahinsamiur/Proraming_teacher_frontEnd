@@ -22,8 +22,8 @@ import "ace-builds/src-noconflict/worker-php"; // Ensure PHP worker is imported
 
 
 
-import { MyContext } from '../../contextAPI';
-import TerminalDemo from "../react-tarminal";
+import { MyContext } from '../contextAPI';
+import TerminalDemo from "./react-tarminal";
 
 
 

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { CiLogout } from "react-icons/ci";
-import DashboardLeft from "../components/v2/dashboard_left"
-import DashboardRight from "../components/v2/dashboard_right"
+
 import { MyContext } from '../contextAPI';
 import { useContext } from "react";
 import AlertComponents from '../components/alert/alert';
@@ -10,18 +9,39 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { update_User_data } from "../reduxSlices/userInfo"
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { getTime } from "../components/functions/Get_time";
 import { BsEmojiTear } from "react-icons/bs";
-
-
+import { FaRegCircleUser } from "react-icons/fa6";
+import Card from './card';
+import CardUpcomming from './Card_upComing';
 export default function Dash() {
 
-
+  const Upcomming_courses = [
+    {
+      title: "php Basic Course",
+      image: "/course_image/php.webp"
+    },
+    {
+      title: "Java Basic Course",
+      image: "/course_image/java.jpg"
+    }, {
+      title: "C Basic Course",
+      image: "/course_image/C.webp"
+    }, {
+      title: "C++ Basic Course",
+      image: "/course_image/C++.png"
+    },
+    {
+      title: "JavaScript Basic",
+      image: "/course_image/javascript.webp"
+    },
+  ]
 
   const navigate = useNavigate()
   const dispatch = useDispatch();
-
+  const data = useSelector((state) => state.userInfo);
+  console.log(data)
   useEffect(() => {
     const checkCookie = async () => {
       try {
@@ -85,11 +105,47 @@ export default function Dash() {
           </div>
         </div>
 
-        <div className='flex-1 flex flex-row overflow-hidden'>
-          <DashboardLeft />
-          <DashboardRight />
+
+
+        {/* dashboard */}
+
+        <div className='flex-1 flex flex-row overflow-hidden  border-[#2F2F2F]'>
+          <div className='w-[10%] h-full flex flex-col border-r-[0.1vw] justify-between items-center py-[5vh] border-[#2F2F2F] '>
+            <div className=" flex flex-col items-center">
+              <FaRegCircleUser className='text-[#2F2F2F] text-[3vw] font-thin' />
+              <h1 className='font-thin'>{data.Name}</h1>
+            </div>
+            <div className='w-auto flex flex-row items-center justify-center gap-[1vw] cursor-pointer' onClick={handle_logout}>
+              <h1 className='font-thin'>Logout</h1>
+              <CiLogout className='text-[#0087FF] text-[2vw]' />
+            </div>
+          </div>
+
+          <div className='w-[90%] pl-[2vw] h-full flex flex-col gap-[1vh]'>
+            <div className='w-full h-1/2 '>
+              <h1 className='text-[1.2vw] text-[#484848]'>Availeable Courses</h1>
+              <Card />
+            </div>
+
+
+
+            <div className='w-full h-1/2 '>
+              <h1 className='text-[1.2vw] text-[#484848]'>Upcomming Courses</h1>
+              <div className='w-full gap-[2vw] flex flex-row'>
+                {Upcomming_courses.map((data) => {
+                  return <CardUpcomming title={data.title} image={data.image} />;
+                })}
+
+              </div>
+
+            </div>
+          </div>
+
+
         </div>
 
+
+        {/* alert components */}
         {alert === "logout" ? (
           <AlertComponents />
         ) : alert === "homeAlert" ? (
@@ -97,9 +153,12 @@ export default function Dash() {
         ) : null}
       </div>
 
+
+
+      {/* this is for mobile screen  */}
       <div className='bg-[#101010] flex flex-col gap-[5vh] justify-center w-screen h-screen  items-center lg:hidden'>
 
-        <BsEmojiTear className='text-[15vw] text-white/70'/>
+        <BsEmojiTear className='text-[15vw] text-white/70' />
         <h1 className='text-center w-[70%] text-white/70 text-[4vw]'>We are really sorry, currently, we are available for computers only</h1>
 
       </div>

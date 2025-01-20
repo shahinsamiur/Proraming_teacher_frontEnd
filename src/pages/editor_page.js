@@ -8,17 +8,17 @@ import { socket_connect_function } from '../components/socket_functions/socket_c
 import { updateData } from '../components/socket_functions/update_data';
 import { audio_chunk } from '../components/socket_functions/audio_chunk';
 import "../App.css";
-import Menu from '../components/v2/menu';
-import Header from '../components/v2/header';
-import CodeSpace from '../components/v2/code_space';
-import CodeSpace2 from '../components/v2/CodeSpace2';
-import EXMenu from '../components/v2/exMenu';
-import PresentationFull from '../components/v2/presentationFull';
+import Menu from '../components/menu';
+import Header from '../components/header';
+import CodeSpace from '../components/code_space';
+import CodeSpace2 from '../components/CodeSpace2';
+import EXMenu from '../components/exMenu';
+import PresentationFull from '../components/presentationFull';
 import SettingCom from '../components/setting_com';
 import AlertComponents from '../components/alert/alert';
 import HomeAlertComponents from '../components/alert/homeAlert';
-import CanvasFull from '../components/v2/canvasFull';
-import InboxFull from '../components/v2/inbox_full';
+import CanvasFull from '../components/canvasFull';
+import InboxFull from '../components/inbox_full';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -35,7 +35,7 @@ const EditorPage = () => {
   const [ChangeSlide, setChangeSlide] = useState(null);
   const dispatch = useDispatch();
   const audioRef = useRef(null);
-  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC, isUserIterect, setbotStatus, botStatus, isToggled, simpleState, setting_open, alert } = useContext(MyContext);
+  const { socket, socket_handler, Slides, setSlides, setTimeOutIdC,setsimpleState, isUserIterect, setbotStatus, isToggled,setIsToggled, simpleState, setting_open,set_setting_open, alert } = useContext(MyContext);
   const { transcript, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
   const [timeoutid, setTimeOutId] = useState(null);
   const [newTimeoutId_trans, setnewTimeoutId_trans] = useState(null);
@@ -43,6 +43,7 @@ const EditorPage = () => {
   const isListeningRef = useRef(false);
   const playing_audio_Ref = useRef(false);
   const free_to_request = useRef(false);
+  const cookie = useRef(false);
 
 
 
@@ -52,11 +53,11 @@ const EditorPage = () => {
     const checkCookie = async () => {
       try {
         // Check if the cookie exists
-        const cookie = await Cookies.get("user");
-        if (cookie !== undefined) {
+         cookie.current =  Cookies.get("user");
+        if (cookie.current !== undefined) {
           // Send the cookie to the backend for validation
           console.log(cookie)
-          const response = await axios.post("https://nextpie-app-nodejs-server.vercel.app/checkcookie", { "cookie": cookie });
+          const response = await axios.post("https://nextpie-app-nodejs-server.vercel.app/checkcookie", { "cookie": cookie.current });
 
           // Handle invalid cookie
           console.log("cookies_check", response.status)
@@ -109,8 +110,19 @@ const EditorPage = () => {
           }, 2000);
           setTimeOutId(newTimeoutId);
         }
-
-        socket.current.emit("reciving_the_anwser", { userData, transcript });
+        if(userData.current_program === "intro_question"&& userData.current_program_count===1) set_setting_open(true)
+          if(userData.current_program === "intro_question"&& userData.current_program_count===2) set_setting_open(false)
+        if(userData.current_program === "intro_question"&& userData.current_program_count===5) setIsToggled(true)
+          if(userData.current_program === "intro_question"&& userData.current_program_count===6) setsimpleState("code")
+        if(userData.current_program === "intro_question"&& userData.current_program_count===6) setsimpleState("presentation")
+        if(userData.current_program === "intro_question"&& userData.current_program_count===7) setsimpleState("canvas")
+        if(userData.current_program === "intro_question"&& userData.current_program_count===8) setsimpleState("inbox")
+        if(userData.current_program === "agenda"){
+          setsimpleState("code")
+          setIsToggled(false)
+        }
+        
+          socket.current.emit("reciving_the_anwser", { userData, transcript });
       } else if (userData.re_request === "stop_user_query") {
         console.log("hit stop query ");
         socket.current.emit("stop_user_query", { userData, transcript });
@@ -221,13 +233,14 @@ const EditorPage = () => {
 
 
 
-
+  // https://programing-teacher-backend.onrender.com
   useEffect(() => {
     if (!socket.current) {
       socket.current = io("http://localhost:5000");
-      socket.current.on("connect", () => socket_connect_function(SpeechRecognition, socket, isListeningRef, userData));
+      socket.current.on("connect", () => socket_connect_function(SpeechRecognition, socket, isListeningRef, userData,cookie.current));
 
       socket.current.on("updateData", async (data) => {
+        console.log("data: ",data)
         if (data === "slides") {
           console.log("slides data got");
           setChangeSlide(true);
@@ -240,7 +253,6 @@ const EditorPage = () => {
         } else if (updateDataTemp.current === null && data !== "slides") {
           updateDataTemp.current = data;
         }
-
         free_to_request.current = true
       });
 
@@ -271,6 +283,8 @@ const EditorPage = () => {
             console.log("spoked");
           });
         }
+
+
       });
 
       socket.current.on("disconnect", () => {

@@ -1,11 +1,11 @@
 import React from 'react';
-import Editor from "../EditorComponent";
+import Editor from "./EditorComponent";
 import { FaPython, FaRegLightbulb } from "react-icons/fa";
 import { TfiLayoutSliderAlt } from "react-icons/tfi";
 import { IoChatboxOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from 'react-redux';
-import { set_right_side_state } from "../../reduxSlices/check";
-import Presentation from "../right_side_components/presentation";
+import { set_right_side_state } from "../reduxSlices/check";
+import Presentation from "./right_side_components/presentation";
 import Inbox from './inbox';
 import Canvas from './canvas';
 

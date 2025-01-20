@@ -1,6 +1,6 @@
 import { useState,useContext } from "react"
 import React from 'react'
-import { MyContext } from "../../contextAPI"
+import { MyContext } from "../contextAPI"
 export default function CanvasFull() {
 
     const {ImageState}=useContext(MyContext)

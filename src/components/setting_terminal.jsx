@@ -8,7 +8,6 @@ export default function SettingEditor() {
 
     const options_theme = [
         { value: "Default", label: "Default" },
-        { value: "gd", label: "Graphic Designer" },
         { value: "github", label: "github" },
         { value: "tomorrow", label: "tomorrow" },
         { value: "darksolarized", label: "darksolarized" },

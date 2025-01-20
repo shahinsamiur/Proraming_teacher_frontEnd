@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { FaLaptopCode } from "react-icons/fa";
 import { TfiLayoutSliderAlt } from "react-icons/tfi";
 import { IoChatboxOutline } from "react-icons/io5";
-import { MyContext } from '../../contextAPI';
+import { MyContext } from '../contextAPI';
 import { FaRegLightbulb } from "react-icons/fa";
 
 export default function ExMenu() {

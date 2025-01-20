@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { MyContext } from '../../contextAPI'
+import { MyContext } from '../contextAPI'
 export default function Canvas() {
 const {ImageState}=useContext(MyContext)
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import Slider from '../swiper_simple'
+import Slider from './swiper_simple'
 export default function presentationFull() {
   return (
     <div className="bg-inherit w-full
