@@ -40,8 +40,9 @@ export default function Dash() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.userInfo);
-  console.log(data)
+  const data = useSelector((state) => state.UserInfo);
+  // const userData = useSelector((state) => state.Check.output)
+
   useEffect(() => {
     const checkCookie = async () => {
       try {
@@ -113,7 +114,7 @@ export default function Dash() {
           <div className='w-[10%] h-full flex flex-col border-r-[0.1vw] justify-between items-center py-[5vh] border-[#2F2F2F] '>
             <div className=" flex flex-col items-center">
               <FaRegCircleUser className='text-[#2F2F2F] text-[3vw] font-thin' />
-              <h1 className='font-thin'>{data.Name}</h1>
+              <h1 className='font-thin'>{data.name}</h1>
             </div>
             <div className='w-auto flex flex-row items-center justify-center gap-[1vw] cursor-pointer' onClick={handle_logout}>
               <h1 className='font-thin'>Logout</h1>

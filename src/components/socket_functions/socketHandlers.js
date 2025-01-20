@@ -13,12 +13,10 @@ import { SetOutput } from "../../reduxSlices/check";
  */
 export const handleSocketConnection = (socket, userData, SpeechRecognition) => {
   socket.current.on('connect', () => {
-    console.log('Socket connected');
     socket.current.emit('initial_connection', userData);
   });
 
   socket.current.on('disconnect', () => {
-    console.log('Socket disconnected');
   });
 };
 
@@ -53,7 +51,6 @@ export const handleSocketEvents = (
  */
 const handleUpdateData = (data, dispatch, setChangeSlide) => {
   if (data === 'slides') {
-    console.log('Slides data received');
     setChangeSlide(true);
   } else {
     dispatch(updateData(data));
@@ -73,6 +70,5 @@ const handleAudioChunk = async (chunk, audioRef, resetTranscript, setSlides, set
       setChangeSlide(false);
     }
     resetTranscript();
-    console.log('Audio chunk processed');
   });
 };

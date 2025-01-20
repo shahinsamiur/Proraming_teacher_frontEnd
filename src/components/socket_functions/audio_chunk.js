@@ -19,7 +19,6 @@ const audio_chunk = async (chunk, resetTranscript, audioRef, onEnd) => {
           if (onEnd) onEnd(); // Call the onEnd callback when playback finishes
       };
   } catch (error) {
-      console.error('Error decoding audio data:', error); // Log error if decoding fails
   }
 
   resetTranscript(); // Reset transcript after handling audio chunk

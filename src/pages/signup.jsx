@@ -70,7 +70,6 @@ const SignupForm = () => {
     try {
       setIsLoginState(true);
       const response = await axios.post('https://nextpie-app-nodejs-server.vercel.app/signup', formData);
-      console.log('Server Response:', response.data);
 
 
 

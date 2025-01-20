@@ -55,7 +55,6 @@ const SigninForm = () => {
             setIsLoginState(true);
             const response = await axios.post('https://nextpie-app-nodejs-server.vercel.app/signin', formData);
 
-            console.log('Server Response:', response.data);
             setFormData({ email: '', password: '' });
             setError('');
             setIsLoginState(false);

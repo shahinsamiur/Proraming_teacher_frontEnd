@@ -16,7 +16,7 @@ export const handleRequestTimeout = (socket, userData, transcript, setTimeoutId,
       } else if (program === 'intro_question') {
         socket.current.emit('reciving_the_anwser', { userData, transcript });
       } else {
-        console.log('Timeout for program:', program);
+
       }
     }, timeoutDuration);
     setTimeoutId(newTimeoutId);

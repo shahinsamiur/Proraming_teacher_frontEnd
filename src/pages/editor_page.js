@@ -56,11 +56,9 @@ const EditorPage = () => {
          cookie.current =  Cookies.get("user");
         if (cookie.current !== undefined) {
           // Send the cookie to the backend for validation
-          console.log(cookie)
           const response = await axios.post("https://nextpie-app-nodejs-server.vercel.app/checkcookie", { "cookie": cookie.current });
 
           // Handle invalid cookie
-          console.log("cookies_check", response.status)
           if (response.status === 404) {
             Cookies.remove("user"); // Remove the invalid cookie
             navigate("/signin"); // Redirect to sign-in page
@@ -70,7 +68,6 @@ const EditorPage = () => {
           navigate("/signin");
         }
       } catch (error) {
-        console.error("Error validating cookie:", error);
         navigate("/signin"); // Redirect in case of an error
       }
     };
@@ -98,7 +95,6 @@ const EditorPage = () => {
 
       if (userData.re_request === true) {
         if (ChangeSlide) {
-          console.log("slide changed");
           setSlides(Slides + 1);
           setChangeSlide(false);
         }
@@ -124,7 +120,6 @@ const EditorPage = () => {
         
           socket.current.emit("reciving_the_anwser", { userData, transcript });
       } else if (userData.re_request === "stop_user_query") {
-        console.log("hit stop query ");
         socket.current.emit("stop_user_query", { userData, transcript });
         free_to_request.current = false
       } else if (userData.re_request === "ask_querys") {
@@ -132,18 +127,15 @@ const EditorPage = () => {
           socket.current.emit("ask_querys", { userData, transcript });
           free_to_request.current = false
 
-          console.log("ask_querys:");
         }, 5000);
       } else if (userData.re_request === "ask_querys_waiting") {
         const newTimeoutId = setTimeout(() => {
           if (transcript.length > 1) {
-            console.warn("ask_querys_waiting is if", transcript.length)
 
             socket.current.emit("ask_querys_waiting", { userData, transcript, Slides });
             free_to_request.current = false
 
           } else {
-            console.warn("ask_querys_waiting is else")
             socket.current.emit("user_no_response", { userData });
             free_to_request.current = false
 
@@ -155,25 +147,21 @@ const EditorPage = () => {
         socket.current.emit("Finished_the_class", { userData, transcript });
 
       }
-      console.log("this is transcript:", transcript);
       if (timeoutid) clearTimeout(timeoutid);
 
       if (userData.current_program === "waiting_for_wish_response" && isListeningRef.current) {
         const newTimeoutId = setTimeout(() => {
           socket.current.emit("reciving_the_anwser", { userData, transcript: transcript });
           free_to_request.current = false
-          console.log("waiting_for_wish_response:");
         }, 5000);
         setTimeOutId(newTimeoutId);
       } else if (userData.current_program === "intro_question" && isListeningRef.current) {
         const newTimeoutId = setTimeout(() => {
-          console.log("intro_question:");
           socket.current.emit("reciving_the_anwser", { userData, transcript });
           free_to_request.current = false
         }, 5000);
         setTimeOutId(newTimeoutId);
       } else if (userData.current_program === "intro_question_anwser_waiting" && isListeningRef.current) {
-        console.log("intro_question_anwser_waiting");
         const newTimeoutId = setTimeout(() => {
           free_to_request.current = false
           if (transcript && transcript.length > 2) {
@@ -187,7 +175,6 @@ const EditorPage = () => {
         const newTimeoutId = setTimeout(() => {
           free_to_request.current = false
           socket.current.emit("after_class_question_recived", { userData, transcript });
-          console.log("after_class_question_waiting:", transcript);
         }, 5000);
         setTimeOutId(newTimeoutId);
       } else if (userData.current_program === "feedBack") {
@@ -208,9 +195,8 @@ const EditorPage = () => {
           }
         }, 3000));
 
-        console.log("code no response");
         const newTimeoutId = setTimeout(() => {
-          console.log("code no response");
+
           socket.current.emit("code_no_response", { userData, transcript });
         }, 30000);
         setTimeOutIdC(newTimeoutId);
@@ -226,7 +212,6 @@ const EditorPage = () => {
 
 
   useEffect(() => {
-    console.log("this is bot status :", playing_audio_Ref.current);
     if (playing_audio_Ref.current === true) setbotStatus("speacking");
     else setbotStatus("listening");
   }, [playing_audio_Ref.current]);
@@ -234,15 +219,14 @@ const EditorPage = () => {
 
 
   // https://programing-teacher-backend.onrender.com
+  // http://localhost:5000
   useEffect(() => {
     if (!socket.current) {
-      socket.current = io("http://localhost:5000");
-      socket.current.on("connect", () => socket_connect_function(SpeechRecognition, socket, isListeningRef, userData,cookie.current));
+      socket.current = io("https://programing-teacher-backend.onrender.com");
+      socket.current.on("connect", () => socket_connect_function(SpeechRecognition, socket, userData,cookie.current));
 
       socket.current.on("updateData", async (data) => {
-        console.log("data: ",data)
         if (data === "slides") {
-          console.log("slides data got");
           setChangeSlide(true);
           free_to_request.current = true
         }
@@ -267,7 +251,6 @@ const EditorPage = () => {
           setbotStatus("speacking");
           await audio_chunk(chunk, resetTranscript, audioRef, () => {
             if (ChangeSlide) {
-              console.log("slide changed");
 
               setSlides(Slides + 1);
               setChangeSlide(false);
@@ -280,7 +263,6 @@ const EditorPage = () => {
             resetTranscript();
             setbotStatus("listening");
             playing_audio_Ref.current = false;
-            console.log("spoked");
           });
         }
 
@@ -288,7 +270,6 @@ const EditorPage = () => {
       });
 
       socket.current.on("disconnect", () => {
-        console.log("Socket disconnected");
       });
     }
 
