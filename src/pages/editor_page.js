@@ -222,7 +222,7 @@ const EditorPage = () => {
   // http://localhost:5000
   useEffect(() => {
     if (!socket.current) {
-      socket.current = io("http://localhost:5000");
+      socket.current = io("https://programing-teacher-backend.onrender.com");
       socket.current.on("connect", () => socket_connect_function(SpeechRecognition, socket, userData,cookie.current));
 
       socket.current.on("updateData", async (data) => {
