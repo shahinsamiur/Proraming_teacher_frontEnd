@@ -127,7 +127,7 @@ const EditorPage = () => {
           socket.current.emit("ask_querys", { userData, transcript });
           free_to_request.current = false
 
-        }, 5000);
+        }, 3000);
       } else if (userData.re_request === "ask_querys_waiting") {
         const newTimeoutId = setTimeout(() => {
           if (transcript.length > 1) {
@@ -141,7 +141,7 @@ const EditorPage = () => {
 
           }
 
-        }, 5000);
+        }, 3000);
         setTimeOutId(newTimeoutId);
       } else if (userData.re_request === "Finished_the_class") {
         socket.current.emit("Finished_the_class", { userData, transcript });
@@ -153,13 +153,13 @@ const EditorPage = () => {
         const newTimeoutId = setTimeout(() => {
           socket.current.emit("reciving_the_anwser", { userData, transcript: transcript });
           free_to_request.current = false
-        }, 5000);
+        }, 3000);
         setTimeOutId(newTimeoutId);
       } else if (userData.current_program === "intro_question" && isListeningRef.current) {
         const newTimeoutId = setTimeout(() => {
           socket.current.emit("reciving_the_anwser", { userData, transcript });
           free_to_request.current = false
-        }, 5000);
+        }, 3000);
         setTimeOutId(newTimeoutId);
       } else if (userData.current_program === "intro_question_anwser_waiting" && isListeningRef.current) {
         const newTimeoutId = setTimeout(() => {
@@ -169,13 +169,13 @@ const EditorPage = () => {
           } else {
             socket.current.emit("user_no_response", userData);
           }
-        }, 5000);
+        }, 3000);
         setTimeOutId(newTimeoutId);
       } else if (userData.current_program === "after_class_question_waiting") {
         const newTimeoutId = setTimeout(() => {
           free_to_request.current = false
           socket.current.emit("after_class_question_recived", { userData, transcript });
-        }, 5000);
+        }, 3000);
         setTimeOutId(newTimeoutId);
       } else if (userData.current_program === "feedBack") {
         const newTimeoutId = setTimeout(() => {
@@ -198,7 +198,7 @@ const EditorPage = () => {
         const newTimeoutId = setTimeout(() => {
 
           socket.current.emit("code_no_response", { userData, transcript });
-        }, 30000);
+        }, 7000);
         setTimeOutIdC(newTimeoutId);
       }
     };
@@ -222,7 +222,7 @@ const EditorPage = () => {
   // http://localhost:5000
   useEffect(() => {
     if (!socket.current) {
-      socket.current = io("https://programing-teacher-backend.onrender.com");
+      socket.current = io("http://localhost:5000");
       socket.current.on("connect", () => socket_connect_function(SpeechRecognition, socket, userData,cookie.current));
 
       socket.current.on("updateData", async (data) => {
